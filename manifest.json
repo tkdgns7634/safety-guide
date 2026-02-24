@@ -1,0 +1,15 @@
+{
+  "name": "안전 가이드",
+  "short_name": "안전가이드",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2f80ed",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
