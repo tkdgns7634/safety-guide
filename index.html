@@ -384,7 +384,25 @@ body.guest .guide-content{
 display:none !important;
 }
 
+
+@page{
+size:A4 portrait;
+margin:10mm;
 }
+
+/* 화면 인쇄 모드일 때만 적용 */
+body.screen-print{
+width:210mm;
+}
+
+/* 잘림 방지 */
+body.screen-print .guide{
+page-break-inside:avoid;
+}
+
+}
+
+
 
 
 
@@ -467,6 +485,30 @@ pointer-events:none;
 }
 
 
+/* ================= 인쇄 버튼 위치 고정 ================= */
+
+.guide{
+position:relative;
+}
+
+.print-btn{
+position:absolute;
+right:15px;
+top:15px;
+z-index:10;
+
+padding:4px 10px;
+border:none;
+border-radius:6px;
+background:#2f80ed;
+color:white;
+font-size:12px;
+cursor:pointer;
+}
+
+
+
+
 
 </style>
 </head>
@@ -482,6 +524,14 @@ pointer-events:none;
 <div class="search-box">
     <input type="text" id="searchInput" placeholder="설비 검색 (예: 프레스, 전단기)">
 </div>
+
+
+
+<div style="text-align:center;margin-bottom:20px;">
+<button onclick="printTOC()">📑 목차 인쇄</button>
+</div>
+
+
 
 
 
@@ -528,7 +578,7 @@ pointer-events:none;
 <tr>
     <th>착용 보호구</th>
     <td colspan="2">
-        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
+        안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100), 방진마스크(3M 8710L)
     </td>
 </tr>
 
@@ -545,11 +595,11 @@ pointer-events:none;
                     작업 시작 5분 전, 눈으로 직접 확인하세요!
                 </div>
                 <ul>
-                    <li>방호장치(광전자식, 손쳐내기식) 정상 작동 여부 확인</li>
+                    <li>손쳐내기식 방호장치 정상 작동 여부 확인</li>
                     <li>금형 고정 상태 및 이상 유무 확인</li>
                     <li>비상정지 스위치 정상 작동 여부 확인</li>
                     <li>작업 공간 내 이물질 및 공구 제거</li>
-                    <li>보호구(안전화, 안전장갑 등) 착용 상태 확인</li>
+                    <li>보호구(안전화, 보안경 등) 착용 상태 확인</li>
                 </ul>
             </td>
         </tr>
@@ -561,9 +611,11 @@ pointer-events:none;
                     이 부위가 당신을 다치게 할 수 있습니다!
                 </div>
                 <ul>
-                    <li>프레스 금형 사이 끼임 위험</li>
-                    <li>가동 중 신체 접근 시 중대 재해 발생 가능</li>
-                    <li>오작동 시 갑작스러운 하강 위험</li>
+          <li>금형 사이 협착 및 끼임 (손, 손가락 절단 위험)</li>
+            <li>가공물 및 금형 날에 의한 절단·베임</li>
+            <li>가공 중 제품, 스크랩, 금형 파손에 따른 비산물</li>
+            <li>금형 및 소재 취급 중 낙하</li>
+            <li>프레스 작동 시 발생하는 소음 및 진동</li>
                 </ul>
             </td>
         </tr>
@@ -575,8 +627,12 @@ pointer-events:none;
                     임의로 해제하지 마십시오!
                 </div>
                 <ul>
-                    <li>광전자식 방호장치, 손쳐내기식 방호장치, 양수조작식 방호장치 등 의무설치</li>
-                    <li>페달 오조작을 막기 위한 페달덮개</li>
+            <li>광전자식 방호장치 (손 접근 시 자동 정지)</li>
+            <li>양수조작식 방호장치 (두 손으로 동시에 조작)</li>
+            <li>손쳐내기식 방호장치 (손을 위험구역 밖으로 밀어냄)</li>
+            <li>고정식 방호덮개 (금형 및 구동부 노출 방지)</li>
+            <li>페달 덮개 (오조작 방지)</li>
+            <li>비상정지 버튼</li>
                 </ul>
             </td>
         </tr>
@@ -588,8 +644,8 @@ pointer-events:none;
             현재 설비에 적용된 방호장치입니다
         </div>
         <ul>
-            <li>광전자식 안전센서</li>
-            <li>페달 보호 커버</li>
+            <li>손쳐내기식 방호장치</li>
+            <li>페달 덮개</li>
             <li>비상정지 버튼</li>
         </ul>
     </td>
@@ -603,8 +659,10 @@ pointer-events:none;
                     숙지하여 경각심을 가지고 주의하십시오!
                 </div>
                 <ul>
-                    <li>방호장치 해제 상태에서 작업 중 손 끼임 사고 발생</li>
-                    <li>설비를 멈추지 않고 금형 내부 이물질 제거 중 협착</li>
+            <li>금형 내부 이물 제거 중 프레스 작동 → 손가락 절단</li>
+            <li>양수조작 미사용 상태에서 작업 → 협착 사고 발생</li>
+            <li>압력에 의해 제품 등이 눌려 튕겨나감 → 안면 및 눈 부상</li>
+            <li>금형 고정 불량 상태에서 작업 → 금형 이탈 및 낙하</li>
                 </ul>
             </td>
         </tr>
@@ -616,9 +674,12 @@ pointer-events:none;
                     숙지 및 준수하십시오!
                 </div>
                 <ul>
-                    <li>프레스 가동 중 손 투입 금지</li>
-                    <li>금형 교체·수리·점검 시 전원 차단</li>
-                    <li>수리·점검 시 “정비 중” 표지판 부착</li>
+            <li>프레스 가동 중 금형 내부 손 투입 절대 금지</li>
+            <li>양수조작 및 안전센서 정상 작동 상태에서만 작업</li>
+            <li>스크랩 제거 시 집게·공구 사용 (맨손 금지)</li>
+            <li>금형 교체·수리·청소 시 반드시 전원 차단 (Lock-Out/Tag-Out)</li>
+            <li>작업 전 안전장치 및 설비 상태 점검 필수</li>
+            <li>이상 발생 시 즉시 작업 중지 후 관리자 보고</li>
                 </ul>
             </td>
         </tr>
@@ -633,7 +694,6 @@ pointer-events:none;
             <li>즉시 비상정지 버튼 작동</li>
             <li>주변 작업자에게 상황 알림</li>
             <li>관리자 및 안전담당자 호출</li>
-            <li>필요 시 119 신고</li>
         </ul>
     </td>
 </tr>
@@ -678,15 +738,16 @@ pointer-events:none;
 </tr>
 
 <tr>
-<th>착용 보호구</th>
-<td colspan="2">
-안전모, 안전화, 보안경(레이저 보호용), 귀마개, 안전장갑
-</td>
+    <th>착용 보호구</th>
+    <td colspan="2">
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경{오토스 L-702YG(ND:YAG)}, 방진마스크(3M 8822)
+    </td>
 </tr>
+
 
 <tr>
 <th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
+<td colspan="2">☑ 비대상</td>
 </tr>
 
 <tr>
@@ -698,11 +759,11 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>레이저 헤드 및 렌즈 오염 여부 확인</li>
-<li>가스 압력 및 공급 상태 확인</li>
-<li>비상정지 버튼 정상 작동 여부 확인</li>
-<li>작업 테이블 주변 이물질 제거</li>
-<li>보호커버 및 인터락 장치 정상 여부 확인</li>
+            <li>레이저 발진기 및 제어장치 정상 작동 여부 확인</li>
+            <li>비상정지 버튼 작동 여부 확인</li>
+            <li>가스(질소) 공급 상태 및 누출 여부 점검</li>
+            <li>집진기 및 환기장치 정상 작동 여부 확인</li>
+            <li>작업 주변 인화성 물질 제거</li>
 </ul>
 
 </td>
@@ -717,10 +778,12 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>레이저 빔에 의한 화상 및 시력 손상 위험</li>
-<li>절단 중 발생하는 고온 금속 파편 화상 위험</li>
-<li>가동 중 작업 테이블 협착 위험</li>
-<li>가스 누출 시 화재 및 폭발 위험</li>
+            <li>레이저 빔 노출 시 화상 및 시력 손상 위험</li>
+            <li>절단 시 발생하는 불꽃 및 고열에 의한 화재 위험</li>
+            <li>절단면 날카로운 소재에 의한 절단·베임</li>
+            <li>금속 절단 시 발생하는 유해가스 및 분진 흡입 위험</li>
+            <li>고압가스(산소, 질소) 누출 및 폭발 위험</li>
+            <li>설비 접근 시 끼임 및 충돌 위험</li>
 </ul>
 
 </td>
@@ -735,10 +798,8 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>레이저 차광 커버 및 보호창 설치</li>
-<li>도어 인터락 안전장치 설치</li>
 <li>비상정지 버튼 설치</li>
-<li>레이저 차광 보호장치</li>
+<li>집진기/국소배기장치</li>
 </ul>
 
 </td>
@@ -753,10 +814,8 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>레이저 차광 보호커버</li>
-<li>도어 인터락 장치</li>
 <li>비상정지 버튼</li>
-<li>가스 차단 밸브</li>
+<li>집진기</li>
 </ul>
 
 </td>
@@ -771,9 +830,9 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>레이저 보호커버 개방 상태에서 작업 중 눈 손상 사고</li>
-<li>가동 중 작업물 제거 시 화상 사고</li>
-<li>절단 후 고온 금속 접촉으로 화상 발생</li>
+            <li>절단 중 발생한 불꽃으로 주변 가연물 착화 → 화재 발생</li>
+            <li>절단 후 소재 취급 중 날카로운 모서리에 손 베임</li>
+            <li>가스 누출 상태에서 작업 → 폭발 및 화상 사고</li>
 </ul>
 
 </td>
@@ -788,10 +847,11 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>레이저 가동 중 보호커버 개방 금지</li>
-<li>작업 중 손이나 신체를 절단 영역에 넣지 말 것</li>
-<li>정비 및 청소 시 반드시 전원 차단</li>
-<li>절단 후 작업물 냉각 확인 후 취급</li>
+            <li>레이저 조사 중 절대 접근 금지</li>
+            <li>작업 전 가스 누출 및 압력 상태 점검</li>
+            <li>작업장 내 인화성 물질 제거</li>
+            <li>절단 후 소재 취급 시 장갑 착용</li>
+            <li>집진기 및 환기장치 상시 가동</li>
 </ul>
 
 </td>
@@ -810,7 +870,8 @@ pointer-events:none;
 <li>레이저 전원 차단</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
+            <li>화재 발생 시 소화기 사용 및 초기 진화</li>
+            <li>가스 누출 시 즉시 작업 중지 및 환기</li>
 </ul>
 
 </td>
@@ -854,13 +915,13 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 귀마개, 작업복
+안전화(RF-40N), 보안경(B-618AF), 방진마스크(3M 8710L)
 </td>
 </tr>
 
 <tr>
 <th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
+<td colspan="2">☑ 비대상</td>
 </tr>
 
 <tr>
@@ -872,11 +933,12 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>척(Chuck) 및 공작물 고정 상태 확인</li>
-<li>공구 장착 상태 및 마모 여부 확인</li>
-<li>비상정지 버튼 정상 작동 여부 확인</li>
-<li>절삭유 공급 상태 확인</li>
-<li>작업 주변 공구 및 이물질 제거</li>
+            <li>척(Chuck) 및 공작물 고정 상태 확인</li>
+            <li>공구(바이트) 체결 상태 및 마모 여부 확인</li>
+            <li>비상정지 장치 정상 작동 여부 확인</li>
+            <li>방호덮개 상태 확인</li>
+            <li>절삭유 공급 상태 확인</li>
+            <li>작업 주변 공구 및 장애물 정리</li>
 </ul>
 
 </td>
@@ -891,10 +953,12 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>회전하는 공작물 및 척에 의한 말림·끼임 위험</li>
-<li>절삭 중 발생하는 금속 칩 비산 위험</li>
-<li>가공물 파손 시 파편 비산 위험</li>
-<li>긴 작업복 또는 장갑 말림 사고 위험</li>
+            <li>회전하는 척 및 공작물에 의한 말림·끼임 위험</li>
+            <li>절삭칩(금속칩) 비산으로 인한 눈 및 피부 손상</li>
+            <li>날카로운 절삭칩에 의한 베임 및 찔림</li>
+            <li>공작물 고정 불량 시 이탈 및 튀김</li>
+            <li>고속 회전에 따른 소음 및 진동</li>
+            <li>장갑·작업복 끼임으로 인한 신체 말림 사고</li>
 </ul>
 
 </td>
@@ -909,10 +973,11 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>척 보호 커버</li>
-<li>칩 비산 방지 투명 방호판</li>
-<li>비상정지 버튼</li>
-<li>가드 및 안전 인터락 장치</li>
+            <li>척 방호덮개</li>
+            <li>절삭칩 비산 방지 커버</li>
+            <li>비상정지 장치</li>
+            <li>풋 브레이크</li>
+            <li>인터록 장치 (덮개 개방 시 정지)</li>
 </ul>
 
 </td>
@@ -927,9 +992,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>척 보호 커버</li>
-<li>투명 비산 방지 가드</li>
-<li>비상정지 버튼</li>
+<li>척 방호덮개</li>
+<li>절삭칩 비산 방지 커버</li>
+<li>비상정지 장치</li>
+<li>풋 브레이크</li>
 </ul>
 
 </td>
@@ -944,9 +1010,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>회전하는 공작물에 작업복이 말려들어가 협착 사고 발생</li>
-<li>절삭 칩 비산으로 눈 부상 사고 발생</li>
-<li>척 렌치 제거하지 않고 가동하여 비산 사고 발생</li>
+            <li>회전 중 공작물에 작업복 말림 → 말림 사고</li>
+            <li>척 고정 불량 상태 작업 → 공작물 이탈 및 충격</li>
+            <li>절삭칩 제거 중 맨손 작업 → 손 베임</li>
+            <li>장갑 착용 상태 작업 → 회전부 끼임 사고 발생</li>
 </ul>
 
 </td>
@@ -961,10 +1028,12 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>작업 전 척 렌치 반드시 제거</li>
-<li>가동 중 공작물 접촉 금지</li>
-<li>보안경 착용 후 작업</li>
-<li>정비 및 공구 교체 시 전원 차단</li>
+            <li>회전 중 공작물 및 척에 손 접근 금지</li>
+            <li>작업 시 장갑 착용 금지 (말림 사고 예방)</li>
+            <li>절삭칩 제거 시 브러시 및 공구 사용 (맨손 금지)</li>
+            <li>공작물은 확실히 고정 후 작업</li>
+            <li>작업 중 방호덮개 개방 금지</li>
+            <li>헐거운 옷, 장신구 착용 금지</li>
 </ul>
 
 </td>
@@ -979,10 +1048,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>즉시 비상정지 버튼 작동</li>
-<li>주변 작업자에게 상황 알림</li>
-<li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
+            <li>즉시 비상정지 버튼 작동</li>
+            <li>작업 중단 후 주변 작업자에게 상황 알림</li>
+            <li>부상 발생 시 응급조치 실시</li>
+            <li>관리자 및 안전담당자 호출</li>
 </ul>
 
 </td>
@@ -999,20 +1068,20 @@ pointer-events:none;
 
  <div class="guide" draggable="true">
     <div class="guide-header">
-        <button class="toggle-btn">선권기 작업 안전가이드</button>
+        <button class="toggle-btn">성권기(권취기) 작업 안전가이드</button>
     </div>
 
     <div class="guide-content">
         <div class="header">
             <img src="./logo.jpg" alt="회사 로고" class="logo">
-            <h1>선권기 작업 안전가이드</h1>
+            <h1>성권기 작업 안전가이드</h1>
         </div>
 
 <table>
 
 <tr>
 <th>설비명칭</th>
-<td colspan="2">선권기 (Winding Machine)</td>
+<td colspan="2">성권기(권취기) (Winding Machine)</td>
 </tr>
 
 <tr>
@@ -1028,13 +1097,13 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 작업장갑
+        안전화(RF-40N), 보안경(B-618AF), 방진마스크(3M 8710L)
 </td>
 </tr>
 
 <tr>
 <th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
+<td colspan="2">☑ 비대상</td>
 </tr>
 
 <tr>
@@ -1046,10 +1115,9 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>코일 고정 장치 및 클램프 상태 확인</li>
+<li>소재 고정 장치 및 클램프 상태 확인</li>
 <li>회전축 및 구동부 이상 유무 확인</li>
 <li>비상정지 버튼 정상 작동 여부 확인</li>
-<li>전선 또는 철선 공급 상태 확인</li>
 <li>작업 주변 공구 및 이물질 제거</li>
 </ul>
 
@@ -1065,10 +1133,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>회전축 및 코일에 의한 말림·끼임 위험</li>
-<li>철선 또는 전선 튐에 의한 상해 위험</li>
-<li>구동부 및 롤러 협착 위험</li>
-<li>가동 중 작업물 접촉 시 부상 위험</li>
+<li>회전하는 권취 디스크 및 축에 의한 말림·협착 위험</li>
+<li>금속 스트립 반발 및 튐에 의한 얼굴·눈 부상 위험</li>
+<li>롤러 및 회전부 접촉에 의한 손 끼임 위험</li>
+<li>가동 중 소재 정리 작업 시 말림 위험</li>
 </ul>
 
 </td>
@@ -1083,10 +1151,9 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>회전체 방호 커버</li>
-<li>구동부 보호 가드</li>
+<li>회전체 및 권취부 보호 커버</li>
 <li>비상정지 버튼</li>
-<li>안전 인터락 장치</li>
+<li>투입부 손 접근 방지 가드</li>
 </ul>
 
 </td>
@@ -1101,8 +1168,6 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>회전체 보호 커버</li>
-<li>구동부 보호 가드</li>
 <li>비상정지 버튼</li>
 </ul>
 
@@ -1118,9 +1183,9 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>회전하는 코일에 장갑이 말려들어가 협착 사고 발생</li>
+<li>회전하는 권취부에 장갑 및 작업복이 말려 협착 사고 발생</li>
 <li>철선 튐으로 인해 얼굴 및 눈 부상 사고 발생</li>
-<li>가동 중 코일 정리 작업 중 손 끼임 사고 발생</li>
+<li>가동 중 소재 정리 작업 중 손 끼임 사고 발생</li>
 </ul>
 
 </td>
@@ -1139,6 +1204,7 @@ pointer-events:none;
 <li>보안경 착용 후 작업</li>
 <li>정비 및 청소 시 전원 차단</li>
 <li>헐거운 작업복 착용 금지</li>
+<li>회전부 주변 장갑 착용 작업 시 말림주의</li>
 </ul>
 
 </td>
@@ -1155,8 +1221,8 @@ pointer-events:none;
 <ul>
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
+<li>전원 차단 및 2차 사고 방지</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -1184,12 +1250,12 @@ pointer-events:none;
 
 <tr>
 <th>설비명칭</th>
-<td colspan="2">가스 용접기 (산소-아세틸렌 용접기)</td>
+<td colspan="2">가스 용접기 (아르곤 용접기)</td>
 </tr>
 
 <tr>
 <th>사용물질</th>
-<td colspan="2">산소(O₂), 아세틸렌(C₂H₂)</td>
+    <td colspan="2">아르곤 가스</td>
 </tr>
 
 <tr>
@@ -1200,13 +1266,14 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 용접용 보안면, 용접장갑, 난연 작업복
+     용접용 보안면(오토스 카멜레온 7), 용접용 장갑(카멜로 용접장갑), 안전화(RF-40N), 방독마스크(7502)(특급 방진필터 3M 2097K 장착),
+용접장갑, 용접각반
 </td>
 </tr>
 
 <tr>
 <th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
+<td colspan="2">☑ 비대상</td>
 </tr>
 
 <tr>
@@ -1218,11 +1285,11 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>가스 호스 및 연결부 누설 여부 확인</li>
-<li>조정기 및 압력계 정상 작동 확인</li>
-<li>역화방지기(Flashback Arrestor) 설치 여부 확인</li>
-<li>용접 토치 상태 및 노즐 막힘 여부 확인</li>
-<li>작업 주변 가연물 제거 및 소화기 비치 확인</li>
+            <li>가스용기 고정 상태 및 전도 방지 여부 확인</li>
+            <li>호스 및 연결부 누설 여부 점검 (비눗물 테스트)</li>
+            <li>압력조절기 및 밸브 정상 작동 여부 확인</li>
+            <li>주변 인화성 물질 제거 및 소화기 비치 확인</li>
+            <li>환기 상태 확인</li>
 </ul>
 
 </td>
@@ -1237,10 +1304,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>가스 누출 시 화재 및 폭발 위험</li>
-<li>용접 불꽃 및 고온 금속에 의한 화상 위험</li>
-<li>역화 및 역류로 인한 호스 폭발 위험</li>
-<li>용접 불티에 의한 주변 화재 발생 위험</li>
+            <li>가스 누출 시 폭발 및 화재 위험</li>
+            <li>용접 불꽃 및 고열에 의한 화상</li>
+            <li>불꽃 비산으로 주변 가연물 착화</li>
+            <li>용접 흄 및 유해가스 흡입</li>
 </ul>
 
 </td>
@@ -1255,10 +1322,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>역화방지기 설치</li>
-<li>가스 압력 조정기</li>
-<li>용접 토치 안전밸브</li>
-<li>소화기 및 방염포 비치</li>
+            <li>압력조절기 (가스 압력 조절)</li>
+            <li>차단밸브 (비상 시 가스 차단)</li>
+            <li>국소배기장치</li>
+            <li>전도 방지 체인</li>
 </ul>
 
 </td>
@@ -1273,10 +1340,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>역화방지기</li>
-<li>가스 압력 조정기</li>
-<li>비상 가스 차단 밸브</li>
-<li>소화기</li>
+            <li>압력조절기</li>
+            <li>차단밸브</li>
+            <li>국소배기장치</li>
+            <li>전도 방지 체인</li>
 </ul>
 
 </td>
@@ -1291,9 +1358,9 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>가스 호스 누출 상태에서 작업 중 폭발 사고 발생</li>
-<li>역화 발생으로 토치 및 호스 폭발 사고 발생</li>
-<li>용접 불티가 가연물에 떨어져 화재 발생</li>
+            <li>가스 누출 상태로 작업 → 폭발 및 화재 발생</li>
+            <li>용접 불꽃으로 주변 가연물 착화 → 화재</li>
+            <li>용접 중 보호구 미착용 → 화상 및 안구 손상</li>
 </ul>
 
 </td>
@@ -1308,10 +1375,11 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>작업 전 가스 누출 여부 반드시 확인</li>
-<li>역화방지기 설치 후 작업</li>
-<li>작업 주변 가연물 제거</li>
-<li>작업 종료 후 가스 밸브 완전 차단</li>
+            <li>작업 전 가스 누출 여부 반드시 점검</li>
+            <li>용접 작업 시 주변 가연물 제거</li>
+            <li>작업 종료 후 밸브 완전 차단</li>
+            <li>환기 상태 유지 및 밀폐공간 작업 금지</li>
+            <li>보호구 착용 철저</li>
 </ul>
 
 </td>
@@ -1326,182 +1394,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>즉시 가스 밸브 차단</li>
-<li>초기 화재 시 소화기 사용</li>
-<li>주변 작업자에게 상황 알림</li>
-<li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
-</ul>
-
-</td>
-</tr>
-
-</table>
-
-</div>
-</div>
-
-<div class="guide" draggable="true">
-    <div class="guide-header">
-        <button class="toggle-btn">가스켓 사상기 작업 안전가이드</button>
-    </div>
-
-    <div class="guide-content">
-        <div class="header">
-            <img src="./logo.jpg" alt="회사 로고" class="logo">
-            <h1>가스켓 사상기 작업 안전가이드</h1>
-        </div>
-
-<table>
-
-<tr>
-<th>설비명칭</th>
-<td colspan="2">가스켓 사상기</td>
-</tr>
-
-<tr>
-<th>사용물질</th>
-<td colspan="2">연마석, 절삭유(필요 시)</td>
-</tr>
-
-<tr>
-<th>MSDS 비치</th>
-<td colspan="2">☑ 비치</td>
-</tr>
-
-<tr>
-<th>착용 보호구</th>
-<td colspan="2">
-안전모, 안전화, 보안경, 방진마스크, 귀마개
-</td>
-</tr>
-
-<tr>
-<th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
-</tr>
-
-<tr>
-<th>[Check]<br>작업전 필수 안전 점검</th>
-<td colspan="2">
-
-<div class="section-title check">
-작업 시작 5분 전, 눈으로 직접 확인하세요!
-</div>
-
-<ul>
-<li>연마석 균열 및 파손 여부 확인</li>
-<li>연마석 고정 상태 확인</li>
-<li>비상정지 버튼 정상 작동 여부 확인</li>
-<li>작업대 및 공작물 고정 상태 확인</li>
-<li>작업 주변 이물질 제거</li>
-</ul>
-
-</td>
-</tr>
-
-<tr>
-<th>[Warning]<br>설비 가동 시 유해위험요인</th>
-<td colspan="2">
-
-<div class="section-title warning">
-이 부위가 당신을 다치게 할 수 있습니다!
-</div>
-
-<ul>
-<li>연마석 파손 시 파편 비산 위험</li>
-<li>회전체 접촉으로 인한 베임 및 협착 위험</li>
-<li>금속 분진 비산으로 인한 눈 및 호흡기 손상</li>
-<li>작업물 튐에 의한 부상 위험</li>
-</ul>
-
-</td>
-</tr>
-
-<tr>
-<th>[Shield]<br>올바른 방호장치</th>
-<td colspan="2">
-
-<div class="section-title shield">
-임의로 해제하지 마십시오!
-</div>
-
-<ul>
-<li>연마석 보호 커버</li>
-<li>비산 방지 투명 가드</li>
-<li>비상정지 버튼</li>
-<li>분진 흡입 장치</li>
-</ul>
-
-</td>
-</tr>
-
-<tr>
-<th>[Installed]<br>현재 설치된 방호장치</th>
-<td colspan="2">
-
-<div class="section-title installed">
-현재 설비에 적용된 방호장치입니다
-</div>
-
-<ul>
-<li>연마석 보호 커버</li>
-<li>투명 비산 방지 가드</li>
-<li>비상정지 버튼</li>
-<li>분진 흡입 장치</li>
-</ul>
-
-</td>
-</tr>
-
-<tr>
-<th>[Accident]<br>사고사례</th>
-<td colspan="2">
-
-<div class="section-title accident">
-숙지하여 경각심을 가지고 주의하십시오!
-</div>
-
-<ul>
-<li>연마석 파손으로 파편이 튀어 눈 부상 발생</li>
-<li>회전체 접촉으로 손 베임 사고 발생</li>
-<li>작업물 고정 불량으로 튀어나와 부상 발생</li>
-</ul>
-
-</td>
-</tr>
-
-<tr>
-<th>[Prevent]<br>사고 예방법</th>
-<td colspan="2">
-
-<div class="section-title prevent">
-숙지 및 준수하십시오!
-</div>
-
-<ul>
-<li>연마석 사용 전 균열 검사 실시</li>
-<li>보안경 및 방진마스크 착용 후 작업</li>
-<li>작업물 확실히 고정 후 작업</li>
-<li>정비 및 교체 시 전원 차단</li>
-</ul>
-
-</td>
-</tr>
-
-<tr>
-<th>[Emergency]<br>비상조치</th>
-<td colspan="2">
-
-<div class="section-title emergency">
-사고 발생 시 즉시 조치하십시오!
-</div>
-
-<ul>
-<li>즉시 비상정지 버튼 작동</li>
-<li>주변 작업자에게 상황 알림</li>
-<li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
+            <li>즉시 가스 밸브 차단</li>
+            <li>화재 발생 시 소화기 사용</li>
+            <li>주변 작업자 대피 및 접근 금지</li>
+            <li>관리자 및 안전담당자 호출</li>
 </ul>
 
 </td>
@@ -1547,13 +1443,14 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 방진마스크, 귀마개
+        안전화(RF-40N), 보안경(B-618AF), 방진마스크(3M 8710L)
+
 </td>
 </tr>
 
 <tr>
 <th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
+<td colspan="2">☑ 비대상</td>
 </tr>
 
 <tr>
@@ -1568,7 +1465,6 @@ pointer-events:none;
 <li>가공 공구(절삭 공구) 장착 상태 확인</li>
 <li>가스켓 고정 장치 및 클램프 상태 확인</li>
 <li>비상정지 버튼 정상 작동 여부 확인</li>
-<li>절삭유 공급 상태 확인</li>
 <li>작업 주변 공구 및 이물질 제거</li>
 </ul>
 
@@ -1585,6 +1481,7 @@ pointer-events:none;
 
 <ul>
 <li>회전하는 가공부에 의한 끼임 및 협착 위험</li>
+<li>회전부에 장갑 및 작업복 말림 위험</li>
 <li>절삭 공구 접촉으로 인한 베임 위험</li>
 <li>금속 칩 비산으로 인한 눈 및 피부 손상</li>
 <li>공작물 고정 불량 시 튐 위험</li>
@@ -1602,10 +1499,9 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>가공부 보호 커버</li>
+<li>절삭부 및 회전부 보호 커버</li>
 <li>비산 방지 투명 가드</li>
 <li>비상정지 버튼</li>
-<li>칩 비산 방지 장치</li>
 </ul>
 
 </td>
@@ -1620,9 +1516,7 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>가공부 보호 커버</li>
-<li>투명 비산 방지 가드</li>
-<li>비상정지 버튼</li>
+<li>정지 버튼</li>
 </ul>
 
 </td>
@@ -1638,7 +1532,7 @@ pointer-events:none;
 
 <ul>
 <li>가공부 접촉으로 손 베임 사고 발생</li>
-<li>금속 칩 비산으로 눈 부상 사고 발생</li>
+<li>금속 칩 비산으로 안구 손상 사고 발생</li>
 <li>공작물 고정 불량으로 튀어나와 부상 발생</li>
 </ul>
 
@@ -1656,6 +1550,7 @@ pointer-events:none;
 <ul>
 <li>가공 전 공작물 확실히 고정</li>
 <li>보안경 및 보호구 착용 후 작업</li>
+<li>금속 칩 제거 시 손 대신 브러시 사용</li>
 <li>가동 중 공작물 접촉 금지</li>
 <li>정비 및 공구 교체 시 전원 차단</li>
 </ul>
@@ -1674,8 +1569,8 @@ pointer-events:none;
 <ul>
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
+<li>전원 차단 및 2차 사고 방지</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -1720,13 +1615,13 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 방진마스크, 귀마개
+        안전화(RF-40N), 보안경(B-618AF), 방진마스크(3M 8710L)
 </td>
 </tr>
 
 <tr>
 <th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
+<td colspan="2">☑ 비대상</td>
 </tr>
 
 <tr>
@@ -1759,7 +1654,7 @@ pointer-events:none;
 <ul>
 <li>회전하는 가공부 접촉으로 인한 협착 및 끼임 위험</li>
 <li>절삭 공구 접촉에 의한 베임 위험</li>
-<li>금속 칩 비산으로 인한 눈 및 피부 손상</li>
+<li>절삭유, 금속 칩 비산으로 인한 눈 및 피부 손상</li>
 <li>공작물 고정 불량 시 튐 위험</li>
 </ul>
 
@@ -1848,7 +1743,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -1891,13 +1785,13 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 작업장갑
+        안전화(RF-40N), 방진마스크(3M 8710L)
 </td>
 </tr>
 
 <tr>
 <th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
+<td colspan="2">☑ 비대상</td>
 </tr>
 
 <tr>
@@ -1929,9 +1823,9 @@ pointer-events:none;
 
 <ul>
 <li>롤러 회전체에 의한 손 끼임 및 협착 위험</li>
-<li>금속 스트립 말림으로 인한 손가락 말림 위험</li>
-<li>금속 소재 끝단에 의한 베임 위험</li>
-<li>가공 중 가스켓 튐에 의한 부상 위험</li>
+<li>금속 스트립 말림에 의한 장갑·작업복 말림 위험</li>
+<li>금속 소재 끝단 접촉에 의한 베임 위험</li>
+<li>성형 중 소재 반발 및 튐 위험</li>
 </ul>
 
 </td>
@@ -1946,10 +1840,9 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>롤러 보호 커버</li>
+<li>회전체 보호 커버</li>
 <li>비상정지 버튼</li>
-<li>회전체 방호 가드</li>
-<li>안전 인터락 장치</li>
+<li>투입부 손 접근 방지 가드</li>
 </ul>
 
 </td>
@@ -1964,9 +1857,8 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>롤러 보호 커버</li>
 <li>비상정지 버튼</li>
-<li>회전체 보호 가드</li>
+<li>구동부 하부 커버</li>
 </ul>
 
 </td>
@@ -1983,7 +1875,7 @@ pointer-events:none;
 <ul>
 <li>롤러 사이 손이 들어가 협착 사고 발생</li>
 <li>금속 스트립 끝단에 의해 손 베임 사고 발생</li>
-<li>가스켓 튐으로 인해 얼굴 부상 발생</li>
+<li>소재 튐으로 인해 얼굴 부상 발생</li>
 </ul>
 
 </td>
@@ -2019,7 +1911,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -2062,13 +1953,13 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 작업장갑
+        안전화(RF-40N), 보안경(B-618AF), 방진마스크(3M 8710L)
 </td>
 </tr>
 
 <tr>
 <th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
+<td colspan="2">☑ 비대상</td>
 </tr>
 
 <tr>
@@ -2099,10 +1990,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>회전 커터에 의한 절단 및 베임 위험</li>
-<li>가공물 회전에 의한 손 말림 위험</li>
-<li>금속 절단 시 비산물에 의한 눈 부상 위험</li>
-<li>절단 후 날카로운 가스켓 단면에 의한 베임 위험</li>
+<li>회전 커터 접촉에 의한 절단 및 베임 위험</li>
+<li>회전하는 가공물에 의한 장갑·작업복 말림 위험</li>
+<li>금속 칩 및 절단편 비산에 의한 눈 부상 위험</li>
+<li>절단 후 날카로운 단면 접촉에 의한 베임 위험</li>
 </ul>
 
 </td>
@@ -2118,9 +2009,9 @@ pointer-events:none;
 
 <ul>
 <li>커터 보호 커버</li>
-<li>회전체 방호 가드</li>
+<li>회전체 보호 가드</li>
 <li>비상정지 버튼</li>
-<li>안전 인터락 장치</li>
+<li>국소배기장치</li>
 </ul>
 
 </td>
@@ -2138,6 +2029,7 @@ pointer-events:none;
 <li>커터 보호 커버</li>
 <li>회전체 보호 가드</li>
 <li>비상정지 버튼</li>
+<li>국소배기장치</li>
 </ul>
 
 </td>
@@ -2153,7 +2045,7 @@ pointer-events:none;
 
 <ul>
 <li>회전 커터에 손이 접촉되어 절단 사고 발생</li>
-<li>가공물 회전에 의해 장갑이 말려들어 협착 사고 발생</li>
+<li>회전 중 가공물 정리 작업을 하다가 장갑이 말려 협착 사고 발생</li>
 <li>절단 중 금속 파편 비산으로 눈 부상 발생</li>
 </ul>
 
@@ -2171,6 +2063,7 @@ pointer-events:none;
 <ul>
 <li>회전 커터 접근 금지</li>
 <li>작업물 고정 상태 확인 후 작업</li>
+<li>가공 중 절단편 제거 작업 금지</li>
 <li>보안경 및 보호구 착용</li>
 <li>정비 및 점검 시 전원 차단</li>
 </ul>
@@ -2190,7 +2083,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -2234,13 +2126,13 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경(레이저용), 방진마스크
+        안전화(RF-40N), 보안경{오토스 L-702YG(ND:YAG)}, 방진마스크(3M 8822)
 </td>
 </tr>
 
 <tr>
 <th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
+<td colspan="2">☑ 비대상</td>
 </tr>
 
 <tr>
@@ -2255,8 +2147,8 @@ pointer-events:none;
 <li>레이저 장치 및 제어장치 정상 작동 여부 확인</li>
 <li>비상정지 버튼 정상 작동 여부 확인</li>
 <li>마킹 영역 안전커버 설치 상태 확인</li>
-<li>집진기(흡입기) 작동 여부 확인</li>
-<li>작업 주변 인화물질 제거</li>
+<li>국소배기장치 작동 여부 확인</li>
+<li>작업 주변 가연물 제거</li>
 </ul>
 
 </td>
@@ -2272,7 +2164,7 @@ pointer-events:none;
 
 <ul>
 <li>레이저 광선 노출로 인한 눈 손상</li>
-<li>레이저 반사광에 의한 시력 손상</li>
+<li>레이저 열에 의한 화재 발생 위험</li>
 <li>마킹 과정에서 발생하는 연기(흄) 흡입 위험</li>
 <li>고온 소재 접촉에 의한 화상</li>
 </ul>
@@ -2289,10 +2181,8 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>레이저 안전 커버</li>
-<li>비상정지 버튼</li>
-<li>인터락 안전장치</li>
-<li>집진기 및 환기 장치</li>
+<li>레이저 차광 커버</li>
+<li>국소배기장치</li>
 </ul>
 
 </td>
@@ -2307,9 +2197,8 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>레이저 보호 커버</li>
-<li>비상정지 버튼</li>
-<li>집진기(흡입기)</li>
+<li>레이저 차광 커버</li>
+<li>국소배기장치</li>
 </ul>
 
 </td>
@@ -2341,8 +2230,8 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>레이저 보호 커버 개방 상태에서 가동 금지</li>
 <li>레이저용 보안경 착용</li>
+<li>반사율이 높은 소재 작업 시 반사광 주의</li>
 <li>집진기 가동 상태 유지</li>
 <li>정비 및 점검 시 전원 차단</li>
 </ul>
@@ -2361,8 +2250,8 @@ pointer-events:none;
 <ul>
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
+<li>전원 차단 및 화재 발생 여부 확인</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -2475,7 +2364,8 @@ pointer-events:none;
             현재 설비에 적용된 방호장치입니다
         </div>
         <ul>
-            <li>광전자식 안전센서</li>
+            <li>광전자식 방호장치</li>
+            <li>양수조작 버튼</li>
             <li>페달 보호 커버</li>
             <li>비상정지 버튼</li>
         </ul>
@@ -2520,7 +2410,6 @@ pointer-events:none;
             <li>즉시 비상정지 버튼 작동</li>
             <li>주변 작업자에게 상황 알림</li>
             <li>관리자 및 안전담당자 호출</li>
-            <li>필요 시 119 신고</li>
         </ul>
     </td>
 </tr>
@@ -2569,7 +2458,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 방수장갑, 귀마개
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -2697,7 +2586,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -2743,7 +2631,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 작업장갑
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -2871,7 +2759,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -2915,7 +2802,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 보호장갑
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -3043,7 +2930,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>잉크가 눈에 들어간 경우 즉시 세척</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -3087,13 +2973,13 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 작업장갑
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
 <tr>
 <th>안전검사 대상</th>
-<td colspan="2">☑ 대상</td>
+<td colspan="2">☑ 비대상</td>
 </tr>
 
 <tr>
@@ -3215,7 +3101,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -3260,7 +3145,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 절단방지 장갑
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -3388,7 +3273,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -3433,7 +3317,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 내열장갑, 방진마스크
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -3561,7 +3445,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>화상 발생 시 즉시 냉수로 세척</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -3619,7 +3502,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 보호장갑, 방진마스크
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -3747,7 +3630,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -3791,7 +3673,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 보호장갑
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -3919,7 +3801,6 @@ pointer-events:none;
 <li>즉시 비상정지 바 또는 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -3964,7 +3845,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 보호장갑
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -4092,7 +3973,6 @@ pointer-events:none;
 <li>즉시 비상정지 바 또는 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -4138,7 +4018,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 내열장갑
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -4266,7 +4146,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -4312,7 +4191,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 보호장갑
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -4440,7 +4319,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -4472,7 +4350,7 @@ pointer-events:none;
 
 <tr>
 <th>사용물질</th>
-<td colspan="2">압축공기, 가스, 고온 유체</td>
+    <td colspan="2">압축공기, 질소, 산소 등 고압가스</td>
 </tr>
 
 <tr>
@@ -4483,7 +4361,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 보호장갑
+안전화(RF-40N), 보안경(B-618AF)
 </td>
 </tr>
 
@@ -4501,11 +4379,11 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>압력계 정상 작동 여부 확인</li>
-<li>안전밸브 이상 여부 확인</li>
-<li>배관 및 연결부 누출 여부 확인</li>
-<li>용기 외관 균열 및 부식 여부 확인</li>
-<li>비상정지 장치 확인</li>
+            <li>압력계 정상 작동 여부 및 지시값 확인</li>
+            <li>안전밸브 작동 상태 및 봉인 여부 확인</li>
+            <li>배관 및 연결부 누설 여부 점검</li>
+            <li>용기 외관 균열, 부식, 변형 여부 확인</li>
+            <li>밸브 개폐 상태 정상 여부 확인</li>
 </ul>
 
 </td>
@@ -4520,10 +4398,12 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>과압으로 인한 폭발 위험</li>
-<li>압력 배출 시 충격 및 소음</li>
-<li>고온 유체 접촉에 의한 화상</li>
-<li>배관 파열에 의한 사고</li>
+            <li>과압 상태에서 용기 파열 및 폭발 위험</li>
+            <li>안전밸브 미작동 시 내부 압력 상승</li>
+            <li>고압가스 누출로 인한 질식 및 화재 위험</li>
+            <li>배관 파손 시 고압 분출로 인한 충격</li>
+            <li>부식 및 노후로 인한 구조적 파손</li>
+            <li>밸브 오조작으로 인한 급격한 압력 변화</li>
 </ul>
 
 </td>
@@ -4538,10 +4418,11 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>안전밸브</li>
-<li>압력계</li>
-<li>압력조절 장치</li>
-<li>비상차단 장치</li>
+            <li>안전밸브 (과압 시 자동 압력 배출)</li>
+            <li>압력계 (내부 압력 확인)</li>
+            <li>압력조절기 (압력 안정 유지)</li>
+            <li>차단밸브 (비상 시 차단)</li>
+            <li>파열판 (긴급 압력 해소)</li>
 </ul>
 
 </td>
@@ -4556,9 +4437,11 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>안전밸브</li>
-<li>압력계</li>
-<li>비상차단 밸브</li>
+            <li>안전밸브 (과압 시 자동 압력 배출)</li>
+            <li>압력계 (내부 압력 확인)</li>
+            <li>압력조절기 (압력 안정 유지)</li>
+            <li>차단밸브 (비상 시 차단)</li>
+            <li>파열판 (긴급 압력 해소)</li>
 </ul>
 
 </td>
@@ -4573,9 +4456,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>과압 상태에서 안전밸브 미작동으로 폭발 사고 발생</li>
-<li>배관 연결부 파열로 작업자 부상 발생</li>
-<li>압력 배출 중 고온 유체 접촉으로 화상 발생</li>
+            <li>안전밸브 고장 상태에서 압력 상승 → 용기 폭발</li>
+            <li>배관 연결부 누설 → 가스 확산 및 질식 사고</li>
+            <li>노후 용기 사용 중 파열 → 파편 비산 사고</li>
+            <li>밸브 급개방으로 고압 분출 → 작업자 충격</li>
 </ul>
 
 </td>
@@ -4590,10 +4474,12 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>정기적인 압력용기 검사 실시</li>
-<li>압력계 및 안전밸브 상태 점검</li>
-<li>과압 발생 시 즉시 가동 중지</li>
-<li>정비 및 점검 시 압력 완전 제거</li>
+            <li>정기검사 및 점검 주기 준수</li>
+            <li>안전밸브 임의 조정 및 해제 금지</li>
+            <li>과압 운전 금지 (정격 압력 준수)</li>
+            <li>누설 발견 시 즉시 사용 중지 및 조치</li>
+            <li>밸브 개폐는 천천히 실시</li>
+            <li>부식 및 손상 발견 시 즉시 교체</li>
 </ul>
 
 </td>
@@ -4608,10 +4494,10 @@ pointer-events:none;
 </div>
 
 <ul>
-<li>즉시 설비 가동 중지</li>
-<li>압력 차단 및 밸브 폐쇄</li>
-<li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
+            <li>즉시 압력 차단 및 밸브 폐쇄</li>
+            <li>주변 작업자 대피 및 접근 금지</li>
+            <li>가스 누출 시 환기 실시</li>
+            <li>관리자 및 안전담당자 호출</li>
 </ul>
 
 </td>
@@ -4656,7 +4542,7 @@ pointer-events:none;
 <tr>
 <th>착용 보호구</th>
 <td colspan="2">
-안전모, 안전화, 보안경, 보호장갑, 방진마스크
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)
 </td>
 </tr>
 
@@ -4784,7 +4670,6 @@ pointer-events:none;
 <li>즉시 비상정지 버튼 작동</li>
 <li>주변 작업자에게 상황 알림</li>
 <li>관리자 및 안전담당자 호출</li>
-<li>필요 시 119 신고</li>
 </ul>
 
 </td>
@@ -5271,27 +5156,7 @@ const btn=document.createElement("button");
 btn.innerText="🖨 인쇄";
 btn.className="print-btn";
 
-guide.querySelector(".guide-header").appendChild(btn);
-
-btn.onclick=(e)=>{
-
-e.stopPropagation();
-
-document.body.classList.add("print-mode");
-
-document.querySelectorAll(".guide")
-.forEach(g=>g.classList.remove("print-target"));
-
-guide.classList.add("print-target");
-
-window.print();
-
-setTimeout(()=>{
-document.body.classList.remove("print-mode");
-guide.classList.remove("print-target");
-},500);
-
-};
+guide.appendChild(btn);
 
 });
 
@@ -5323,6 +5188,131 @@ document.addEventListener("keydown",function(e){
  }
 
 });
+
+
+function printScreen(){
+
+const content = document.body;
+
+/* A4 높이(px) 계산 (대략 1122px) */
+const A4_HEIGHT = 1122;
+
+/* 현재 문서 높이 */
+const contentHeight = document.documentElement.scrollHeight;
+
+/* 비율 계산 */
+let scale = A4_HEIGHT / contentHeight;
+
+/* 너무 작아지는 것 방지 */
+if(scale > 1) scale = 1;
+
+/* 적용 */
+content.style.transform = `scale(${scale})`;
+content.style.transformOrigin = "top left";
+content.style.width = (100/scale) + "%";
+
+document.body.classList.add("screen-print");
+
+window.print();
+
+/* 복구 */
+setTimeout(()=>{
+content.style.transform = "";
+content.style.width = "";
+document.body.classList.remove("screen-print");
+},500);
+
+}
+
+
+
+
+/* ================= 목차 인쇄 ================= */
+
+function printTOC(){
+
+/* 목차 HTML 생성 */
+let tocHTML = `
+<h1 style="text-align:center;">가스켓 제조 안전가이드</h1>
+<h2 style="margin-bottom:20px;">📑 설비 목차</h2>
+<ol style="font-size:16px; line-height:1.8;">
+`;
+
+/* 현재 보이는 설비만 가져오기 */
+document.querySelectorAll(".guide").forEach(guide=>{
+
+if(guide.style.display === "none") return;
+
+let title = guide.querySelector(".guide-header").innerText;
+
+/* 앞에 번호 중복 제거 */
+title = title.replace(/^\d+\.\s*/,'');
+
+tocHTML += `<li>${title}</li>`;
+
+});
+
+tocHTML += `</ol>`;
+
+/* 새 창에서 인쇄 */
+const win = window.open("", "", "width=800,height=900");
+
+win.document.write(`
+<html>
+<head>
+<title>목차 인쇄</title>
+<style>
+body{
+font-family:'Noto Sans KR', Arial;
+padding:30px;
+}
+h1{font-size:22px;}
+h2{font-size:18px;}
+ol{padding-left:20px;}
+li{margin-bottom:8px;}
+</style>
+</head>
+<body>
+${tocHTML}
+</body>
+</html>
+`);
+
+win.document.close();
+win.focus();
+win.print();
+win.close();
+
+}
+
+
+
+/* ================= 인쇄 (이벤트 위임 방식) ================= */
+
+document.addEventListener("click", function(e){
+
+if(!e.target.classList.contains("print-btn")) return;
+
+e.stopPropagation();
+
+const guide = e.target.closest(".guide");
+
+document.body.classList.add("print-mode");
+
+document.querySelectorAll(".guide")
+.forEach(g=>g.classList.remove("print-target"));
+
+guide.classList.add("print-target");
+
+window.print();
+
+setTimeout(()=>{
+document.body.classList.remove("print-mode");
+guide.classList.remove("print-target");
+},500);
+
+});
+
 
 
 
