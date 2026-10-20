@@ -1,0 +1,6373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>가스켓 제조 안전가이드</title>
+<style>
+/* ================= 기본 스타일 ================= */
+
+body{
+font-family:'Noto Sans KR', Arial, sans-serif;
+background:#f5f6fa;
+margin:0;
+padding:20px;
+}
+
+button{
+padding:12px 16px;
+font-size:16px;
+}
+
+/* ================= 전체 토글 ================= */
+
+#toggleAllContainer{
+text-align:center;
+margin-bottom:20px;
+}
+
+#toggleAllContainer label{
+font-weight:bold;
+font-size:16px;
+cursor:pointer;
+}
+
+#toggleAll{
+margin-right:8px;
+transform:scale(1.2);
+}
+
+/* ================= 가이드 카드 ================= */
+
+.guide{
+margin:20px 0;
+border-radius:12px;
+box-shadow:0 6px 15px rgba(0,0,0,0.1);
+background:#fff;
+overflow:hidden;
+transition:transform .2s, box-shadow .2s;
+}
+
+.guide:hover{
+transform:translateY(-3px);
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* ================= 가이드 헤더 ================= */
+
+.guide-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:linear-gradient(135deg,#56ccf2,#2f80ed);
+color:#fff;
+padding:14px 20px;
+font-weight:bold;
+font-size:16px;
+cursor:pointer;
+border-radius:12px 12px 0 0;
+box-shadow:inset 0 -3px 5px rgba(0,0,0,0.1);
+transition:all .2s;
+}
+
+.guide-header:hover{
+background:linear-gradient(135deg,#2f80ed,#1c60b3);
+transform:translateY(-1px);
+}
+
+/* 헤더 화살표 */
+
+.guide-header::after{
+content:'▼';
+font-size:14px;
+transition:transform .3s;
+}
+
+.guide.open .guide-header::after{
+transform:rotate(-180deg);
+}
+
+/* ================= 가이드 내용 ================= */
+
+.guide-content{
+display:none;
+padding:20px;
+border-top:1px solid #e0e0e0;
+animation:fadeIn .3s ease;
+}
+
+.guide.open .guide-content{
+display:block;
+}
+
+/* ================= 로고 영역 ================= */
+
+.header{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:20px;
+}
+
+.header .logo{
+width:60px;
+border-radius:8px;
+box-shadow:0 2px 4px rgba(0,0,0,0.2);
+}
+
+.header h1{
+font-size:20px;
+margin:0;
+color:#2f2f2f;
+}
+
+/* ================= 표 스타일 ================= */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th,td{
+border:1px solid #d1d1d1;
+padding:10px;
+text-align:left;
+}
+
+th{
+background:#eaf0ff;
+width:180px;
+}
+
+td{
+background:#fafbff;
+}
+
+/* ================= 섹션 타이틀 ================= */
+
+.section-title{
+font-weight:bold;
+margin-bottom:8px;
+padding:6px 12px;
+border-radius:6px;
+color:#fff;
+display:inline-block;
+}
+
+.section-title.check{background:#56ccf2;}
+.section-title.warning{background:#f2994a;}
+.section-title.shield{background:#27ae60;}
+.section-title.accident{background:#eb5757;}
+.section-title.prevent{background:#6fcf97;}
+.section-title.installed{background:#2f80ed;}
+.section-title.emergency{background:#eb5757;}
+
+/* ================= 리스트 ================= */
+
+ul{
+margin:0;
+padding-left:20px;
+}
+
+ul li{
+margin-bottom:6px;
+}
+
+/* ================= 드래그 ================= */
+
+.guide.dragging{
+opacity:.5;
+touch-action:none;
+}
+
+.section.drag-over{
+border:2px dashed #2f80ed;
+background:#f0f4ff;
+}
+
+/* 드래그 위치 표시 */
+
+.drop-indicator{
+height:4px;
+background:#2f80ed;
+margin:6px 0;
+border-radius:2px;
+transition:.2s;
+}
+
+/* ================= 로그인 잠금 ================= */
+
+.locked{
+pointer-events:none;
+opacity:.5;
+}
+
+.locked .guide-list{
+display:none !important;
+opacity:0;
+pointer-events:none;
+}
+
+/* ================= 로그인 상태 ================= */
+
+.login-status{
+text-align:center;
+font-weight:bold;
+margin:10px 0;
+font-size:16px;
+}
+
+/* ================= 검색 ================= */
+
+.search-box{
+margin:20px;
+text-align:center;
+}
+
+#searchInput{
+width:300px;
+padding:10px;
+font-size:16px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+/* ================= 로그인 모달 ================= */
+
+.modal{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.4);
+justify-content:center;
+align-items:center;
+}
+
+.modal-box{
+background:#fff;
+padding:30px;
+border-radius:12px;
+width:320px;
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+text-align:center;
+animation:fadeIn .2s ease;
+}
+
+.modal-box h2{
+margin:0 0 20px;
+}
+
+/* 비밀번호 입력 */
+
+.password-wrapper{
+display:flex;
+align-items:center;
+border:1px solid #ddd;
+border-radius:8px;
+overflow:hidden;
+margin-bottom:20px;
+}
+
+.password-wrapper input{
+flex:1;
+border:none;
+padding:10px;
+font-size:14px;
+outline:none;
+}
+
+.toggle-text{
+padding:0 12px;
+cursor:pointer;
+font-size:13px;
+color:#2f80ed;
+user-select:none;
+}
+
+/* 모달 버튼 */
+
+.modal-buttons{
+display:flex;
+gap:10px;
+}
+
+.modal-buttons button{
+flex:1;
+padding:10px;
+border-radius:8px;
+border:none;
+cursor:pointer;
+font-weight:bold;
+}
+
+#confirmLogin{
+background:#2f80ed;
+color:#fff;
+}
+
+#cancelLogin{
+background:#ddd;
+}
+
+/* ================= 애니메이션 ================= */
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(-10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* ================= 모바일 ================= */
+
+@media(max-width:768px){
+
+body{
+font-size:15px;
+}
+
+.section{
+margin:10px;
+}
+
+#searchInput{
+width:90%;
+}
+
+}
+
+/* ================= 인쇄 ================= */
+
+@media print{
+
+body{
+background:#fff !important;
+color:#000 !important;
+}
+
+.guide{
+box-shadow:none !important;
+transform:none !important;
+
+/* 전체 인쇄 시 설비 단위 페이지 */
+page-break-before:always;
+page-break-inside:auto;
+}
+
+/* 개별 설비 인쇄일 때만 항목 안 잘리게 */
+body.print-mode tr{
+page-break-inside:avoid;
+break-inside:avoid;
+}
+
+body.print-mode td,
+body.print-mode th{
+page-break-inside:avoid;
+break-inside:avoid;
+}
+
+.guide-header{
+background:#2f80ed !important;
+color:#000 !important;
+}
+
+.guide-content{
+display:block !important;
+visibility:visible !important;
+opacity:1 !important;
+}
+
+.section h2{
+page-break-after:avoid;
+}
+
+.toggle-btn,
+#toggleAllContainer,
+.drag-over{
+display:none !important;
+}
+
+/* 미로그인 인쇄 차단 */
+
+body.guest .guide-content{
+display:none !important;
+}
+
+
+@page{
+size:A4 portrait;
+margin:10mm;
+}
+
+/* 화면 인쇄 모드일 때만 적용 */
+body.screen-print{
+width:210mm;
+}
+
+/* 잘림 방지 */
+body.screen-print .guide{
+page-break-inside:avoid;
+}
+
+}
+
+
+
+
+
+/* ================= 선택 인쇄 ================= */
+
+@media print {
+
+body.print-mode .guide{
+display:none;
+}
+
+body.print-mode .guide.print-target{
+display:block;
+}
+
+body.print-mode header,
+body.print-mode .top-bar,
+body.print-mode #searchInput,
+body.print-mode .login-area{
+display:none !important;
+}
+
+}
+
+.print-btn{
+
+float:right;
+margin-left:10px;
+
+padding:4px 10px;
+
+border:none;
+border-radius:6px;
+
+background:#2f80ed;
+color:white;
+
+font-size:12px;
+cursor:pointer;
+
+}
+
+.print-btn:hover{
+background:#1c5ecf;
+}
+
+
+/* ================= 설비 선택 인쇄 ================= */
+
+@media print {
+
+/* 전체 기본 숨김 */
+body.print-mode *{
+visibility:hidden;
+}
+
+/* 선택한 설비만 표시 */
+body.print-mode .guide.print-target,
+body.print-mode .guide.print-target *{
+visibility:visible;
+}
+
+/* 위치 보정 */
+body.print-mode .guide.print-target{
+position:absolute;
+left:0;
+top:0;
+width:100%;
+}
+
+/* 버튼 숨김 */
+.print-btn{
+display:none !important;
+}
+
+.toggle-btn{
+pointer-events:none;
+}
+
+}
+
+
+/* ================= 인쇄 버튼 위치 고정 ================= */
+
+.guide{
+position:relative;
+}
+
+.print-btn{
+position:absolute;
+right:15px;
+top:15px;
+z-index:10;
+
+padding:4px 10px;
+border:none;
+border-radius:6px;
+background:#2f80ed;
+color:white;
+font-size:12px;
+cursor:pointer;
+}
+
+
+
+
+
+</style>
+</head>
+<body>
+
+<button id="userLoginBtn">일반 로그인</button>
+<button id="adminLoginBtn">관리자 로그인</button>
+<button id="logoutBtn" style="display:none;">로그아웃</button>
+
+<span id="loginStatus" style="margin-left:10px;font-weight:bold;"></span>
+
+
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="설비 검색 (예: 프레스, 전단기)">
+</div>
+
+
+
+<div style="text-align:center;margin-bottom:20px;">
+<button onclick="printTOC()">📑 목차 인쇄</button>
+</div>
+
+
+<button onclick="printAllGuide()">
+🖨 전체 안전가이드 인쇄
+</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 style="text-align:center;">가스켓 제조 안전가이드</h1>
+
+<!-- 전체 토글 체크박스 -->
+<div id="toggleAllContainer">
+    <label><input type="checkbox" id="toggleAll"> 전체 펼치기/접기</label>
+</div>
+<!-- 🔷 생산1과 설비 -->
+<div class="section" id="prod1">
+    <h2>생산1과 설비</h2>
+    <div class="guide-list">
+
+    <div class="guide" draggable="true">
+        <div class="guide-header">
+            <button class="toggle-btn">프레스(30톤) 작업 안전가이드</button>
+        </div>
+        <div class="guide-content">
+            <div class="header">
+                <img src="./logo.jpg" alt="회사 로고" class="logo">
+                <h1>프레스(30톤) 작업 안전가이드</h1>
+            </div>
+             <table>
+        <tr>
+            <th>설비명칭</th>
+            <td colspan="2">프레스(30톤)</td>
+        </tr>
+
+<tr>
+    <th>사용물질</th>
+    <td colspan="2">윤활유(Kixx RD HD 46)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+    <th>착용 보호구</th>
+    <td colspan="2">
+        안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)(필요 시), 방진마스크(3M 8710L)
+    </td>
+</tr>
+
+<tr>
+    <th>안전검사 대상</th>
+    <td>☑ 대상</td>
+</tr>
+
+
+        <tr>
+            <th>[Check]<br>작업전 필수 안전 점검</th>
+            <td colspan="2">
+                <div class="section-title check">
+                    작업 시작 5분 전, 눈으로 직접 확인하세요!
+                </div>
+                <ul>
+                    <li>손쳐내기식 방호장치 정상 작동 여부 확인</li>
+                    <li>금형 고정 상태 및 이상 유무 확인</li>
+                    <li>비상정지 스위치 정상 작동 여부 확인</li>
+                    <li>작업 공간 내 이물질 및 공구 제거</li>
+                    <li>보호구(안전화, 보안경 등) 착용 상태 확인</li>
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <th>[Warning]<br>설비 가동 시 유해위험요인</th>
+            <td colspan="2">
+                <div class="section-title warning">
+                    이 부위가 당신을 다치게 할 수 있습니다!
+                </div>
+                <ul>
+          <li>금형 사이 협착 및 끼임 (손, 손가락 절단 위험)</li>
+            <li>가공물 및 금형 날에 의한 절단·베임</li>
+            <li>가공 중 제품, 스크랩, 금형 파손에 따른 비산물</li>
+            <li>금형 및 소재 취급 중 낙하</li>
+            <li>프레스 작동 시 발생하는 소음 및 진동</li>
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <th>[Shield]<br>올바른 방호장치</th>
+            <td colspan="2">
+                <div class="section-title shield">
+                    임의로 해제하지 마십시오!
+                </div>
+                <ul>
+            <li>광전자식 방호장치 (손 접근 시 자동 정지)</li>
+            <li>양수조작식 방호장치 (두 손으로 동시에 조작)</li>
+            <li>손쳐내기식 방호장치 (손을 위험구역 밖으로 밀어냄)</li>
+            <li>페달 덮개 (오조작 방지)</li>
+            <li>비상정지 버튼</li>
+                </ul>
+            </td>
+        </tr>
+
+<tr>
+    <th>[Installed]<br>현재 설치된 방호장치</th>
+    <td colspan="2">
+        <div class="section-title installed">
+            현재 설비에 적용된 방호장치입니다
+        </div>
+        <ul>
+            <li>손쳐내기식 방호장치</li>
+            <li>페달 덮개</li>
+            <li>비상정지 버튼</li>
+        </ul>
+    </td>
+</tr>
+
+
+        <tr>
+            <th>[Accident]<br>사고사례</th>
+            <td colspan="2">
+                <div class="section-title accident">
+                    숙지하여 경각심을 가지고 주의하십시오!
+                </div>
+                <ul>
+            <li>금형 내부 이물 제거 중 프레스 작동 → 손가락 절단</li>
+            <li>양수조작 미사용 상태에서 작업 → 협착 사고 발생</li>
+            <li>압력에 의해 제품 등이 눌려 튕겨나감 → 안면 및 눈 부상</li>
+            <li>금형 고정 불량 상태에서 작업 → 금형 이탈 및 낙하</li>
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <th>[Prevent]<br>사고 예방법</th>
+            <td colspan="2">
+                <div class="section-title prevent">
+                    숙지 및 준수하십시오!
+                </div>
+                <ul>
+            <li>프레스 가동 중 금형 내부 손 투입 절대 금지</li>
+            <li>양수조작 및 안전센서 정상 작동 상태에서만 작업</li>
+            <li>스크랩 제거 시 집게·공구 사용 (맨손 금지)</li>
+            <li>금형 교체·수리·청소 시 반드시 전원 차단 (Lock-Out/Tag-Out)</li>
+            <li>작업 전 안전장치 및 설비 상태 점검 필수</li>
+            <li>이상 발생 시 즉시 작업 중지 후 관리자 보고</li>
+                </ul>
+            </td>
+        </tr>
+
+<tr>
+    <th>[Emergency]<br>비상조치</th>
+    <td colspan="2">
+        <div class="section-title emergency">
+            사고 발생 시 즉시 조치하십시오!
+        </div>
+        <ul>
+            <li>즉시 비상정지 버튼 작동</li>
+            <li>주변 작업자에게 상황 알림</li>
+            <li>관리자 및 안전담당자 호출</li>
+        </ul>
+    </td>
+</tr>
+
+
+    </table>
+
+
+        </div>
+    </div>
+
+
+
+
+
+ <div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">레이저 절단기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>레이저 절단기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">레이저 절단기</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">윤활유(Kixx RD HD 46), 절단가스(질소, 산소)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+    <th>착용 보호구</th>
+    <td colspan="2">
+        안전모(DH-1-2 ABE형), 안전화(RF-40N), 보안경{오토스 L-702YG(ND:YAG)}, 방진마스크(3M 8822)
+    </td>
+</tr>
+
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+            <li>레이저 발진기 및 제어장치 정상 작동 여부 확인</li>
+            <li>비상정지 버튼 작동 여부 확인</li>
+            <li>가스(질소) 공급 상태 및 누출 여부 점검</li>
+            <li>집진기 및 환기장치 정상 작동 여부 확인</li>
+            <li>작업 주변 인화성 물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+            <li>레이저 빔 노출 시 화상 및 시력 손상 위험</li>
+            <li>절단 시 발생하는 불꽃 및 고열에 의한 화재 위험</li>
+            <li>절단면 날카로운 소재에 의한 절단·베임</li>
+            <li>금속 절단 시 발생하는 유해가스 및 분진 흡입 위험</li>
+            <li>고압가스(산소, 질소) 누출 및 폭발 위험</li>
+            <li>설비 접근 시 끼임 및 충돌 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+            <li>절단 중 발생한 불꽃으로 주변 가연물 착화 → 화재 발생</li>
+            <li>절단 후 소재 취급 중 날카로운 모서리에 손 베임</li>
+            <li>가스 누출 상태에서 작업 → 폭발 및 화상 사고</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+            <li>레이저 조사 중 절대 접근 금지</li>
+            <li>작업 전 가스 누출 및 압력 상태 점검</li>
+            <li>작업장 내 인화성 물질 제거</li>
+            <li>절단 후 소재 취급 시 장갑 착용</li>
+            <li>집진기 및 환기장치 상시 가동</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>레이저 전원 차단</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+            <li>화재 발생 시 소화기 사용 및 초기 진화</li>
+            <li>가스 누출 시 즉시 작업 중지 및 환기</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+ <div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">선반 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>선반 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">선반</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">윤활유(Kixx RD HD 46), 방청제(BW RUSTOP P-370)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+안전화(RF-40N), 보안경(B-618AF), 방진마스크(3M 8710L)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+            <li>척(Chuck) 및 공작물 고정 상태 확인</li>
+            <li>공구(바이트) 체결 상태 및 마모 여부 확인</li>
+            <li>비상정지 장치 정상 작동 여부 확인</li>
+            <li>방호덮개 상태 확인</li>
+            <li>절삭유 공급 상태 확인</li>
+            <li>작업 주변 공구 및 장애물 정리</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+            <li>회전하는 척 및 공작물에 의한 말림·끼임 위험</li>
+            <li>절삭칩(금속칩) 비산으로 인한 눈 및 피부 손상</li>
+            <li>날카로운 절삭칩에 의한 베임 및 찔림</li>
+            <li>공작물 고정 불량 시 이탈 및 튀김</li>
+            <li>고속 회전에 따른 소음 및 진동</li>
+            <li>장갑·작업복 끼임으로 인한 신체 말림 사고</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+            <li>척 방호덮개</li>
+            <li>절삭칩 비산 방지 커버</li>
+            <li>비상정지 장치</li>
+            <li>풋 브레이크</li>
+            <li>인터록 장치 (덮개 개방 시 정지)</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>척 방호덮개</li>
+<li>절삭칩 비산 방지 커버</li>
+<li>비상정지 장치</li>
+<li>풋 브레이크</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+            <li>회전 중 공작물에 작업복 말림 → 말림 사고</li>
+            <li>척 고정 불량 상태 작업 → 공작물 이탈 및 충격</li>
+            <li>절삭칩 제거 중 맨손 작업 → 손 베임</li>
+            <li>장갑 착용 상태 작업 → 회전부 끼임 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+            <li>회전 중 공작물 및 척에 손 접근 금지</li>
+            <li>작업 시 장갑 착용 금지 (말림 사고 예방)</li>
+            <li>절삭칩 제거 시 브러시 및 공구 사용 (맨손 금지)</li>
+            <li>공작물은 확실히 고정 후 작업</li>
+            <li>작업 중 방호덮개 개방 금지</li>
+            <li>헐거운 옷, 장신구 착용 금지</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+            <li>즉시 비상정지 버튼 작동</li>
+            <li>작업 중단 후 주변 작업자에게 상황 알림</li>
+            <li>부상 발생 시 응급조치 실시</li>
+            <li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+
+ <div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">성권기(권취기) 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>성권기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">성권기(권취기) (Winding Machine)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">방청유(BW RUSTOP P-370, WD-40), 흑연(GRAPHITE)(7782-42-5)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+        안전화(RF-40N), 보안경(B-618AF), 방진마스크(3M 8710L)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>소재 고정 장치 및 클램프 상태 확인</li>
+<li>회전축 및 구동부 이상 유무 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>회전하는 권취 디스크 및 축에 의한 말림·협착 위험</li>
+<li>금속 스트립 반발 및 튐에 의한 얼굴·눈 부상 위험</li>
+<li>롤러 및 회전부 접촉에 의한 손 끼임 위험</li>
+<li>가동 중 소재 정리 작업 시 말림 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>회전체 및 권취부 보호 커버</li>
+<li>비상정지 버튼</li>
+<li>투입부 손 접근 방지 가드</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>권취 중 회전하는 드럼에 장갑과 작업복 소매가 말려들어가 팔 부위 협착 사고 발생</li>
+<li>장력이 걸린 철선이 파단되면서 튕겨 나와 얼굴 및 안구 부상 사고 발생</li>
+<li>가동 중 권취 상태를 정리하기 위해 손을 넣었다가 회전부와 소재 사이에 손가락이 끼이는 사고 발생</li>
+<li>권취 드럼 교체 작업 중 드럼이 전도되어 발 부위 골절 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>회전 중 코일 및 철선 접촉 금지</li>
+<li>보안경 착용 후 작업</li>
+<li>정비 및 청소 시 전원 차단</li>
+<li>헐거운 작업복 착용 금지</li>
+<li>회전부 주변 장갑 착용 작업 시 말림주의</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>전원 차단 및 2차 사고 방지</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">가스 용접기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>가스 용접기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">가스 용접기 (아르곤 용접기)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+    <td colspan="2">아르곤 가스(CAS No.7440-37-1)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+     용접용 보안면(오토스 카멜레온 7), 용접용 장갑(카멜로 용접장갑), 안전화(RF-40N), 방독마스크(7502)(특급 방진필터 3M 2097K 장착),
+용접장갑, 용접각반
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+            <li>가스용기 고정 상태 및 전도 방지 여부 확인</li>
+            <li>호스 및 연결부 누설 여부 점검 (비눗물 테스트)</li>
+            <li>압력조절기 및 밸브 정상 작동 여부 확인</li>
+            <li>주변 인화성 물질 제거 및 소화기 비치 확인</li>
+            <li>환기 상태 확인</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+            <li>가스 누출 시 폭발 및 화재 위험</li>
+            <li>용접 불꽃 및 고열에 의한 화상</li>
+            <li>불꽃 비산으로 주변 가연물 착화</li>
+            <li>용접 흄 및 유해가스 흡입</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+            <li>압력조절기 (가스 압력 조절)</li>
+            <li>차단밸브 (비상 시 가스 차단)</li>
+            <li>전도 방지 체인</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+            <li>압력조절기</li>
+            <li>차단밸브</li>
+            <li>전도 방지 체인</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+            <li>가스 누출 상태로 작업 → 폭발 및 화재 발생</li>
+            <li>용접 불꽃으로 주변 가연물 착화 → 화재</li>
+            <li>용접 중 보호구 미착용 → 화상 및 안구 손상</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+            <li>작업 전 가스 누출 여부 반드시 점검</li>
+            <li>용접 작업 시 주변 가연물 제거</li>
+            <li>작업 종료 후 밸브 완전 차단</li>
+            <li>환기 상태 유지 및 밀폐공간 작업 금지</li>
+            <li>보호구 착용 철저</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+            <li>즉시 가스 밸브 차단</li>
+            <li>화재 발생 시 소화기 사용</li>
+            <li>주변 작업자 대피 및 접근 금지</li>
+            <li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">가스켓 홈가공기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>가스켓 홈가공기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">가스켓 홈가공기</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">윤활유(Kixx RD HD 46)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+        안전화(RF-40N), 보안경(B-618AF), 방진마스크(3M 8710L)
+
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>가공 공구(절삭 공구) 장착 상태 확인</li>
+<li>가스켓 고정 장치 및 클램프 상태 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>회전하는 가공부에 의한 끼임 및 협착 위험</li>
+<li>회전부에 장갑 및 작업복 말림 위험</li>
+<li>절삭 공구 접촉으로 인한 베임 위험</li>
+<li>금속 칩 비산으로 인한 눈 및 피부 손상</li>
+<li>공작물 고정 불량 시 튐 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>절삭부 및 회전부 보호 커버</li>
+<li>비산 방지 투명 가드</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>가공 중 발생한 칩을 제거하기 위해 회전 중인 공구에 접근하다 손가락이 절삭공구에 접촉되어 베임 사고 발생</li>
+<li>보안경 미착용 상태에서 가공 작업을 실시하다 금속 칩이 눈에 튀어 안구 손상 사고 발생</li>
+<li>공작물 체결이 불완전한 상태에서 가공 중 소재가 튀어나와 작업자 부상 발생</li>
+<li>설비 점검 중 전원을 차단하지 않은 상태에서 공구부를 확인하다 회전부에 장갑이 말려들어가면서 손 협착 발생</li>
+<li>가공 중 공구가 파손되면서 파편이 비산하여 얼굴 부위 타박상 및 찰과상 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>가공 전 공작물 확실히 고정</li>
+<li>보안경 및 보호구 착용 후 작업</li>
+<li>금속 칩 제거 시 손 대신 브러시 사용</li>
+<li>가동 중 공작물 접촉 금지</li>
+<li>정비 및 공구 교체 시 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>전원 차단 및 2차 사고 방지</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">가스켓 가공기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>가스켓 가공기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">가스켓 제조용 가공기</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">윤활유(Kixx RD HD 46)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+        안전화(RF-40N), 보안경(B-618AF), 방진마스크(3M 8710L)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>가공 공구 장착 상태 및 마모 여부 확인</li>
+<li>공작물(가스켓) 고정 상태 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>절삭유 공급 상태 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>회전하는 가공부 접촉으로 인한 협착 및 끼임 위험</li>
+<li>절삭 공구 접촉에 의한 베임 위험</li>
+<li>절삭유, 금속 칩 비산으로 인한 눈 및 피부 손상</li>
+<li>공작물 고정 불량 시 튐 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>가공부 보호 커버</li>
+<li>칩 비산 방지 가드</li>
+<li>비상정지 버튼</li>
+<li>안전 인터락 장치</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>가공부 보호 커버</li>
+<li>비산 방지 투명 가드</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>제품 걸림 제거 작업 중 손을 금형 내부에 넣었다가 기동 스위치 조작으로 협착 사고 발생</li>
+<li>절단날 청소 작업 중 보호장갑이 회전부에 말려들어가 손 부상 사고 발생</li>
+<li>공작물 체결 불량 상태에서 가공하던 중 소재가 비산하여 얼굴 부위 타박상 발생</li>
+<li>가공 중 발생한 금속 칩이 눈에 튀어 각막 손상 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>작업 전 공작물 확실히 고정</li>
+<li>보안경 및 보호구 착용 후 작업</li>
+<li>가동 중 공작물 접촉 금지</li>
+<li>정비 및 공구 교체 시 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">가스켓 밴딩기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>가스켓 밴딩기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">가스켓 제조용 밴딩기</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">윤활유(Kixx RD HD 46)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+        안전화(RF-40N), 방진마스크(3M 8710L)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>롤러 및 가이드 장치 이상 여부 확인</li>
+<li>가스켓 소재 공급 상태 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>작업물 고정 상태 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>롤러 회전체에 의한 손 끼임 및 협착 위험</li>
+<li>금속 스트립 말림에 의한 장갑·작업복 말림 위험</li>
+<li>금속 소재 끝단 접촉에 의한 베임 위험</li>
+<li>성형 중 소재 반발 및 튐 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>회전체 보호 커버</li>
+<li>비상정지 버튼</li>
+<li>투입부 손 접근 방지 가드</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+<li>구동부 하부 커버</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+
+<ul>
+<li>소재 위치를 조정하던 중 손이 롤러 사이에 끼어 손가락 협착 사고 발생</li>
+<li>밴딩 작업 후 금속 스트립 끝단을 정리하던 중 날카로운 단부에 손이 베이는 사고 발생</li>
+<li>가공 중 소재가 탄성에 의해 튀어 오르면서 작업자 얼굴 부위 타박상 발생</li>
+<li>소재 투입 중 장갑이 회전 롤러에 말려들어가 손가락 협착 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>롤러 회전부 손 접근 금지</li>
+<li>금속 소재 취급 시 보호장갑 착용</li>
+<li>가동 중 소재 정리 작업 금지</li>
+<li>정비 및 점검 시 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+ <div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">V홈 가공기(구경 커팅기) 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>V홈 가공기(구경 커팅기) 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">가스켓 V홈 가공기(구경 커팅기)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2"></td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+        안전화(RF-40N), 보안경(B-618AF), 방진마스크(3M 8710L)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>V커터(절삭날) 고정 상태 및 마모 여부 확인</li>
+<li>롤러 및 이송장치 이상 여부 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>집진기 및 흡입덕트 연결 상태 확인</li>
+<li>작업 테이블 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>회전 절삭날 접촉에 의한 절단 및 베임 위험</li>
+<li>이송 롤러 회전체에 의한 손 말림·협착 위험</li>
+<li>금속 절삭 분진 및 비산물에 의한 눈 자극 위험</li>
+<li>절삭 가공 중 소음 및 진동 발생 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>절삭부 보호 커버</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>절삭 중 발생한 금속 칩 제거 작업 중 손가락 베임 사고 발생</li>
+<li>가동 상태에서 소재 위치를 수정하다 롤러에 장갑이 말려들어간 사고 발생</li>
+<li>집진기 미가동 상태에서 장시간 작업 후 금속 분진 노출 사례 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>가동 중 절삭부 및 롤러 접촉 금지</li>
+<li>절삭칩 제거 시 반드시 설비 정지 후 작업</li>
+<li>배기장치 가동 상태 유지 및 보호구 착용</li>
+<li>정비 및 점검 시 전원 차단(LOTO) 실시</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>부상자 응급조치 후 관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+ <div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">레이저 마킹기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>레이저 마킹기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">레이저 마킹기 (Laser Marking Machine)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2"></td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+        안전화(RF-40N), 보안경{오토스 L-702YG(ND:YAG)}, 방진마스크(3M 8822)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>레이저 장치 및 제어장치 정상 작동 여부 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>마킹 영역 안전커버 설치 상태 확인</li>
+<li>국소배기장치 작동 여부 확인</li>
+<li>작업 주변 가연물 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>레이저 광선 노출로 인한 눈 손상</li>
+<li>레이저 열에 의한 화재 발생 위험</li>
+<li>마킹 과정에서 발생하는 연기(흄) 흡입 위험</li>
+<li>고온 소재 접촉에 의한 화상</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>레이저 차광 커버</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>레이저 차광 커버</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>안전커버를 임의 해제한 상태에서 레이저 조사부를 확인하다 반사광에 노출되어 안구 손상 사고 발생</li>
+<li>집진설비를 가동하지 않고 장시간 작업하여 레이저 가공 연기 흡입으로 호흡기 이상 증상 발생</li>
+<li>작업 종료 직후 고온 상태의 금속 제품을 맨손으로 취급하여 화상 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>레이저용 보안경 착용</li>
+<li>반사율이 높은 소재 작업 시 반사광 주의</li>
+<li>집진기 가동 상태 유지</li>
+<li>정비 및 점검 시 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>전원 차단 및 화재 발생 여부 확인</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+</div>
+</div>
+
+
+
+
+
+<!-- 🔷 생산2과 설비 -->
+<div class="section" id="prod2">
+    <h2>생산2과 설비</h2>
+    <div class="guide-list">
+
+
+
+    <div class="guide" draggable="true">
+        <div class="guide-header">
+            <button class="toggle-btn">프레스(80톤) 작업 안전가이드</button>
+        </div>
+        <div class="guide-content">
+            <div class="header">
+                <img src="./logo.jpg" alt="회사 로고" class="logo">
+                <h1>프레스(80톤) 작업 안전가이드</h1>
+            </div>
+             <table>
+        <tr>
+            <th>설비명칭</th>
+            <td colspan="2">프레스(80톤)</td>
+        </tr>
+
+<tr>
+    <th>사용물질</th>
+    <td colspan="2">윤활유(Kixx RD HD 46)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+    <th>착용 보호구</th>
+    <td colspan="2">
+        안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)(필요 시), 방진마스크(3M 8710L)
+    </td>
+</tr>
+
+<tr>
+    <th>안전검사 대상</th>
+    <td>☑ 대상</td>
+</tr>
+
+
+        <tr>
+            <th>[Check]<br>작업전 필수 안전 점검</th>
+            <td colspan="2">
+                <div class="section-title check">
+                    작업 시작 5분 전, 눈으로 직접 확인하세요!
+                </div>
+                <ul>
+                    <li>광전자식, 양수조작식 방호장치 정상 작동 여부 확인</li>
+                    <li>금형 고정 상태 및 이상 유무 확인</li>
+                    <li>비상정지 스위치 정상 작동 여부 확인</li>
+                    <li>작업 공간 내 이물질 및 공구 제거</li>
+                    <li>보호구(안전화, 보안경 등) 착용 상태 확인</li>
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <th>[Warning]<br>설비 가동 시 유해위험요인</th>
+            <td colspan="2">
+                <div class="section-title warning">
+                    이 부위가 당신을 다치게 할 수 있습니다!
+                </div>
+                <ul>
+          <li>금형 사이 협착 및 끼임 (손, 손가락 절단 위험)</li>
+            <li>가공물 및 금형 날에 의한 절단·베임</li>
+            <li>가공 중 제품, 스크랩, 금형 파손에 따른 비산물</li>
+            <li>금형 및 소재 취급 중 낙하</li>
+            <li>프레스 작동 시 발생하는 소음 및 진동</li>
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <th>[Shield]<br>올바른 방호장치</th>
+            <td colspan="2">
+                <div class="section-title shield">
+                    임의로 해제하지 마십시오!
+                </div>
+                <ul>
+            <li>광전자식 방호장치 (손 접근 시 자동 정지)</li>
+            <li>양수조작식 방호장치 (두 손으로 동시에 조작)</li>
+            <li>손쳐내기식 방호장치 (손을 위험구역 밖으로 밀어냄)</li>
+            <li>페달 덮개 (오조작 방지)</li>
+            <li>비상정지 버튼</li>
+                </ul>
+            </td>
+        </tr>
+
+<tr>
+    <th>[Installed]<br>현재 설치된 방호장치</th>
+    <td colspan="2">
+        <div class="section-title installed">
+            현재 설비에 적용된 방호장치입니다
+        </div>
+        <ul>
+            <li>광전자식 방호장치</li>
+            <li>양수조작식 방호장치</li>
+            <li>페달 덮개</li>
+            <li>비상정지 버튼</li>
+        </ul>
+    </td>
+</tr>
+
+
+        <tr>
+            <th>[Accident]<br>사고사례</th>
+            <td colspan="2">
+                <div class="section-title accident">
+                    숙지하여 경각심을 가지고 주의하십시오!
+                </div>
+                <ul>
+            <li>금형 내부 이물 제거 중 프레스 작동 → 손가락 절단</li>
+            <li>양수조작 미사용 상태에서 작업 → 협착 사고 발생</li>
+            <li>압력에 의해 제품 등이 눌려 튕겨나감 → 안면 및 눈 부상</li>
+            <li>금형 고정 불량 상태에서 작업 → 금형 이탈 및 낙하</li>
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <th>[Prevent]<br>사고 예방법</th>
+            <td colspan="2">
+                <div class="section-title prevent">
+                    숙지 및 준수하십시오!
+                </div>
+                <ul>
+            <li>프레스 가동 중 금형 내부 손 투입 절대 금지</li>
+            <li>양수조작 및 안전센서 정상 작동 상태에서만 작업</li>
+            <li>스크랩 제거 시 집게·공구 사용 (맨손 금지)</li>
+            <li>금형 교체·수리·청소 시 반드시 전원 차단 (Lock-Out/Tag-Out)</li>
+            <li>작업 전 안전장치 및 설비 상태 점검 필수</li>
+            <li>이상 발생 시 즉시 작업 중지 후 관리자 보고</li>
+                </ul>
+            </td>
+        </tr>
+
+<tr>
+    <th>[Emergency]<br>비상조치</th>
+    <td colspan="2">
+        <div class="section-title emergency">
+            사고 발생 시 즉시 조치하십시오!
+        </div>
+        <ul>
+            <li>즉시 비상정지 버튼 작동</li>
+            <li>주변 작업자에게 상황 알림</li>
+            <li>관리자 및 안전담당자 호출</li>
+        </ul>
+    </td>
+</tr>
+
+
+    </table>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">워터젯 절단기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>워터젯 절단기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">워터젯 절단기 (Water Jet)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2"></td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+안전화(RF-40N), 보안경(B-618AF), 귀마개(3M 1100)(필요 시), 방진마스크(3M 8710L)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>고압 호스 및 연결부 누수 여부 확인</li>
+<li>노즐 및 절단 헤드 이상 여부 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>연마재 공급 상태 확인</li>
+<li>작업 테이블 주변 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>초고압 워터젯 분사에 의한 절단 및 관통 위험</li>
+<li>고압 호스 파손 시 충격 위험</li>
+<li>절단 작업 중 소음 및 물 튐(미끄러짐)</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>절단 상태를 확인하기 위해 가동 중인 노즐 부근에 손을 접근시켰다가 고압 워터젯에 노출되어 손가락 절단 사고 발생</li>
+<li>연마재와 금속 파편이 비산하여 보안경 미착용 작업자의 안구 손상 사고 발생</li>
+<li>고압 호스 노후 및 체결 불량으로 호스가 파열되어 작업자 부상 사고 발생</li>
+<li>절단물 회수 작업 중 설비가 재가동되어 고압수에 노출되는 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>절단 헤드 근접 작업 금지</li>
+<li>고압 장치 점검 후 작업</li>
+<li>압력 완전 제거 후 노즐 및 호스 정비 실시</li>
+<li>정비 및 점검 시 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+
+ <div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">유압식 재단기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>유압식 재단기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">유압식 재단기 (Hydraulic Shearing Machine)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2"> 유압유</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+ 안전화(RF-40N)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>절단날 고정 상태 확인</li>
+<li>재료 고정 장치 정상 작동 여부 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>유압 장치 누유 여부 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>절단날 사이 손 끼임 및 절단 위험</li>
+<li>유압 오작동 시 절단부 갑작스러운 하강 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>절단부 보호 커버</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>절단부 보호 커버</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>재단 위치를 손으로 조정하던 중 유압 재단기가 작동하여 손가락 절단 사고 발생</li>
+<li>재단 완료 후 제품을 꺼내던 중 금형이 하강하여 손 협착 및 골절 사고 발생</li>
+<li>금형 내부 이물질 제거 중 설비가 재가동되어 손 끼임 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>절단날 사이 손 투입 금지</li>
+<li>재료 고정 후 작업 실시</li>
+<li>정비 및 점검 시 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+ <div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">잉크마킹기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>잉크마킹기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">잉크마킹기 (Ink Marking Machine)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">잉크용제(PG흑색)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+        안전화(RF-40N), 니트릴장갑
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>마킹 롤러 및 노즐 상태 확인</li>
+<li>잉크 누출 여부 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>마킹 위치 및 작업물 고정 상태 확인</li>
+<li>작업 주변 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>컨베이어 구동부 접촉에 의한 손 끼임 위험</li>
+<li>잉크 및 세척용 용제 접촉에 의한 피부 자극</li>
+<li>잉크 비산 및 용제 증기에 의한 눈·호흡기 자극</li>
+<li>마킹 헤드 및 센서부 오작동에 의한 접촉 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>가동 중 롤러에 묻은 잉크를 제거하던 중 장갑이 말려들어가 손가락 열상 및 골절 사고 발생</li>
+<li>잉크 카트리지 교체 작업 중 잉크가 분사되어 눈에 들어가 안구 손상 사고 발생</li>
+<li>환기장치 미가동 상태에서 용제를 사용하여 어지럼증 및 호흡기 자극 증상 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>회전 롤러 접근 금지</li>
+<li>보안경 및 보호장갑 착용</li>
+<li>잉크 취급 후 손 세척</li>
+<li>정비 및 점검 시 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>잉크가 눈에 들어간 경우 즉시 세척</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">전단기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>전단기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">전단기 (Shearing Machine)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2"></td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+   안전화(RF-40N)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>절단날 고정 상태 확인</li>
+<li>재료 고정 장치 정상 작동 여부 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>절단부 보호 커버 이상 여부 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>절단날 사이 손 끼임 및 절단 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>가드식 방호장치</li>
+<li>페달 덮개</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>가드식 방호장치</li>
+<li>페달 덮개</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>절단 중 소재 위치를 손으로 바로 잡다가 절단날 사이에 손가락이 들어가 절단 사고 발생</li>
+<li>절단 후 잔재물을 제거하던 중 발판 스위치 오작동으로 손가락 절단 사고 발생</li>
+<li>공작물을 잡고 절단 작업을 수행하던 중 손이 미끄러져 절단날에 접촉되어 손 부상 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>절단날 사이 손 투입 금지</li>
+<li>재료 고정 후 작업 실시</li>
+<li>정비 및 점검 시 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">나이프 커팅기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>나이프 커팅기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">나이프 커팅기 (Knife Cutting Machine)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2"></td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+   안전화(RF-40N), 귀마개(3M 1100), 방진마스크(3M 8710L)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>작업물 고정 상태 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>이동하는 커팅헤드와의 충돌 및 접촉 위험</li>
+<li>절단날 접촉에 의한 베임 및 절단 위험</li>
+<li>소재 고정 중 손가락 끼임 위험</li>
+<li>절단 후 소재 단면에 의한 베임 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+<li>커팅헤드 보호 커버</li>
+<li>광전자식 방호장치</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+<li>커팅헤드 보호 커버</li>
+<li>광전자식 방호장치</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>가공 중 소재 위치를 조정하던 중 이동하는 나이프에 손가락이 접촉되어 절단 사고 발생</li>
+<li>절단된 제품을 회수하던 중 날카로운 절단면에 손이 베임 사고 발생</li>
+<li>칼날 교체 및 청소 작업 중 전원 차단 없이 작업하다 손 베임 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>가동 중 커팅헤드 작업반경 내 손 투입 금지</li>
+<li>소재 세팅 및 회수 시 장비 정지 확인</li>
+<li>정비 및 칼날 교체 시 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">질석커터 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>질석커터 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">질석커터 (Vermiculite Cutter)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">질석(Microlite Powder), Microlite HTS, 팽창질석(IV-500/1000), 고무원료(KNB 35H), 접착제 희석제(J-7), 
+실란(A-187), 에탄올99</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+안전화(RF-40N), 방진마스크(3M 8822)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>절단날 고정 상태 확인</li>
+<li>에어실린더 및 구동부 이상 여부 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>작업물 위치 및 정렬 상태 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>절단날 접촉에 의한 손 베임 및 절단 위험</li>
+<li>질석 분진 흡입에 의한 호흡기 자극 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>절단부 보호 커버</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>절단부 보호 커버</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>작업물 위치 조정 중 절단날에 손가락이 접촉되어 베임 사고 발생</li>
+<li>에어실린더 작동 중 손을 넣어 협착 사고 발생</li>
+<li>청소 작업 중 장비 오작동으로 손 부상 발생</li>
+<li>집진기 미가동 상태 장시간 작업 후 호흡기 자극 증상 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>가동 중 절단부 손 접근 금지</li>
+<li>소재 위치 조정 시 장비 정지 후 작업</li>
+<li>방진마스크 착용 및 집진기 가동</li>
+<li>정비 및 칼날 교체 시 에어 및 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">질석롤러 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>질석롤러 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">질석롤러 (Vermiculite Roller Press Machine)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">질석(Microlite Powder), Microlite HTS, 팽창질석(IV-500/1000), 고무원료(KNB 35H), 접착제 희석제(J-7), 
+실란(A-187), 에탄올99</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+안전화(RF-40N), 방진마스크(3M 8822)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>롤러 및 회전체 이상 여부 확인</li>
+<li>롤러 간격 및 압착 상태 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>질석 분진 흡입에 의한 호흡기 자극 위험</li>
+<li>작업물 투입 중 손가락 끼임 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>광전자식 방호장치</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>광전자식 방호장치</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>회전 중 롤러 청소 작업을 하다 손가락 끼임 발생</li>
+<li>분진이 지속적으로 발생하는 환경에서 작업 후 호흡기 불편 증상 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>방진마스크 착용</li>
+<li>정비 및 청소 시 전원 차단 후 작업</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">질석카렌다 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>질석카렌다 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">질석카렌다 (Vermiculite Calender Machine)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">질석(Microlite Powder), Microlite HTS, 팽창질석(IV-500/1000), 고무원료(KNB 35H), 접착제 희석제(J-7), 
+실란(A-187), 에탄올99</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+안전화(RF-40N), 방진마스크(3M 8822)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>롤러 및 회전체 이상 여부 확인</li>
+<li>롤러 간격 및 압착 상태 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>구동부 이상 유무 및 누유 여부 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>회전 롤러 사이 손 말림 및 협착 위험</li>
+<li>질석 분진 흡입에 의한 호흡기 자극 위험</li>
+<li>작업물 투입 및 배출 중 손가락 협착 위험</li>
+<li>구동부 및 회전축 접촉 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+<li>회전체 덮개</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>작업물 위치 조정 중 손이 롤러에 말려 협착 사고 발생</li>
+<li>청소 중 회전체 접촉으로 장갑이 말려들어감</li>
+<li>구동부 덮개 제거 상태에서 작업 중 작업복 끼임 발생</li>
+<li>장시간 분진 노출로 호흡기 자극 증상 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>회전 롤러 및 구동부 손 접근 금지</li>
+<li>방진마스크 착용</li>
+<li>헐거운 작업복 및 장갑 착용 금지</li>
+<li>정비 및 청소 시 전원 차단 후 작업</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">우레탄 용해로 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>우레탄 용해로 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">우레탄 용해로</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">우레탄 원료(DS250)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+        안전화(RF-40N), 보안경(B-618AF), 방독마스크(3M 7502)+방독필터(6006K), 방열장갑
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>히터 및 온도조절기 정상 작동 여부 확인</li>
+<li>용해 탱크 및 배관 누출 여부 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>환기 장치 작동 여부 확인</li>
+<li>작업 주변 인화물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>우레탄 증기 흡입에 의한 호흡기 및 눈 자극 위험</li>
+<li>고온 용융 우레탄 접촉에 의한 화상 위험</li>
+<li>과열 시 화재 발생 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>온도 과열 방지 장치</li>
+<li>비상정지 버튼</li>
+<li>환기 장치</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>온도 과열 방지 장치</li>
+<li>비상정지 버튼</li>
+<li>환기 장치</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>원료 교반 중 용융 우레탄이 비산되어 작업자의 팔과 목 부위에 중증 화상 사고 발생</li>
+<li>배기설비 이상 상태에서 장시간 작업하여 우레탄 증기 흡입에 따른 어지럼증 및 호흡기 자극 증상 발생</li>
+<li>온도조절기 고장으로 용해로가 과열되어 우레탄 원료가 발화하고 설비 화재로 이어진 사고 발생</li>
+<li>청소 및 점검을 위해 덮개를 개방한 상태에서 고온 증기에 노출되어 안면부 화상 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>내열장갑 및 보호구 착용</li>
+<li>환기 장치 작동 상태 및 방독마스크 착용 상태에서 작업</li>
+<li>설비 과열 방지 및 온도 관리</li>
+<li>용융 우레탄 투입 및 배출 시 얼굴 접근 금지</li>
+<li>정비 및 점검 시 전원 차단</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>화상 발생 시 즉시 냉수로 세척</li>
+<li>용융 우레탄 제거 시 무리하게 떼어내지 말 것</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+</div>
+</div>
+
+
+  
+
+
+
+
+
+
+<!-- 🔷 LB동 설비 -->
+<div class="section" id="lb">
+    <h2>LB동 설비</h2>
+    <div class="guide-list">
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">니더기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>니더기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">니더기 (Kneader)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">배합 원료{COTIOX KA-100, KAOLIN, TCR435N-10-3.0, NBR 6240, KNB 35L, ELOFADTM PH100, 
+DAEZO(TRANS ACTIVATED ZINC OXIDE), 폴리-파라페닐렌테레프탈아마이드, ZDA (Zinc Diacrylate Mixture),
+PERCUMYL D, KETTLITZ- TAC/GR 50, 규회석 (WOLLASTONITE), R 0520 BLUE, R 0750 BROWN, R-SILVER, R 0630 GREEN,
+R 2B RED, 실란(KBM-503), Mineral Wool, CERAKWOOL New-Bio), ARBOCEL B 400, 실리카 Nipsil VN3, 중탄 S500,
+무기질바인더 IB-A6, SBR(KUMHO 1502)},
+기계유(Shell Tonna S2 M 68), 기어 윤활유(Shell Omala S2 G 220, Super EP 150), 
+윤활유(Kixx RD HD 46, 뿌리는 그리스, TECTYL LUBE 220), 방청제(WD-40)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+ 안전화(RF-40N), 보안경(B-618AF), 방독마스크6200(정화통 6006k, 방진필터 5N11, 리테이너 501)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>혼합 블레이드 정상 작동 여부 확인</li>
+<li>투입구 및 덮개 안전장치 확인</li>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>구동부 이상 진동 및 소음 여부 확인</li>
+<li>작업 주변 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>혼합 블레이드에 의한 협착·말림 위험</li>
+<li>원료 투입 시 투입구 접근에 따른 끼임 위험</li>
+<li>투입구 승강부 작동 중 신체 협착 위험</li>
+<li>배출 작업 중 고무 혼합물 낙하 위험</li>
+<li>화학 첨가제 및 분진 흡입에 의한 건강장해 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>투입구 인터락 안전장치</li>
+<li>혼합 블레이드 구동부 방호커버</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>투입구 인터락 안전장치</li>
+<li>혼합 블레이드 구동부 방호커버</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>원료 투입 중 장갑이 블레이드에 말려 들어가 손가락 골절 사고 발생</li>
+<li>설비 내부 잔여물을 제거하던 중 동료가 설비를 기동하여 협착 사고 발생</li>
+<li>점검을 위해 투입구 덮개를 개방한 상태에서 설비를 가동하여 신체 일부가 끼이는 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>설비 가동 중 투입구 내부에 손 또는 공구 접근 금지</li>
+<li>청소·점검·칼날 교체 시 전원 차단 및 LOTO를 실시</li>
+<li>인터락 및 방호장치를 임의 해제 금지</li>
+<li>원료 투입 시 장갑, 작업복 등이 회전체에 말려들지 않도록 주의</li>
+<li>화학물질 취급 시 MSDS를 숙지하고 국소배기장치를 가동</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+ <div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">믹싱롤 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>믹싱롤 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">믹싱롤 (Mixing Roll)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">기계유(Shell Tonna S2 M 68), 기어 윤활유(Shell Omala S2 G 220, Super EP 150), 
+윤활유(Kixx RD HD 46, 뿌리는 그리스, TECTYL LUBE 220), 방청제(WD-40) </td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+  안전화(RF-40N), 보안경(B-618AF), 방진마스크(8822)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>롤 회전 상태 및 이상 소음 여부 확인</li>
+<li>비상정지 바(세이프티 바) 정상 작동 여부 확인</li>
+<li>롤 간격 및 압력 상태 확인</li>
+<li>방호 커버 설치 상태 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>롤 사이 협착 및 말림 위험</li>
+<li>장갑 또는 작업복 말림 사고</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>비상정지 바(세이프티 바)</li>
+<li>롤 방호 커버</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 바(세이프티 바)</li>
+<li>롤 방호 커버</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>작업 종료 후 잔여물을 제거하기 위해 롤이 완전히 정지되기 전에 청소를 실시하다 손 협착 사고 발생</li>
+<li>점검 중 동료가 설비를 재가동하여 작업자가 회전부에 끼이는 사고 발생</li>
+<li>헐렁한 작업복 소매가 회전 롤에 말려들어가 팔 부위 열상 및 골절 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>점검·정비·청소 작업 시 전원 차단 후 Lock-Out / Tag-Out(LOTO)을 실시하고, 작업 완료 전까지 재가동을 금지</li>
+<li>소매가 넓거나 헐렁한 작업복 착용을 금지하고, 작업복 단추·소매를 정리한 상태에서 작업</li>
+<li>회전 중인 롤 주변에서는 손, 공구, 청소포 등을 직접 접근 금지</li>
+<li>비상정지바 및 비상정지 버튼 위치를 사전에 숙지하고 정기적으로 작동 상태를 확인</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 바 또는 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">카렌다 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>카렌다 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">카렌다 (Calender Roll)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">기계유(Shell Tonna S2 M 68), 기어 윤활유(Shell Omala S2 G 220, Super EP 150), 
+윤활유(Kixx RD HD 46, 뿌리는 그리스, TECTYL LUBE 220), 방청제(WD-40)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+ 안전화(RF-40N), 보안경(B-618AF), 방진마스크(8822)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>롤 회전 상태 및 이상 소음 여부 확인</li>
+<li>비상정지 장치 정상 작동 여부 확인</li>
+<li>롤 간격 및 압력 설정 상태 확인</li>
+<li>방호 커버 설치 상태 확인</li>
+<li>작업 주변 공구 및 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>롤 사이 협착 및 신체 말림 위험</li>
+<li>회전체 접촉에 의한 작업복 말림 위험</li>
+<li>청소 및 이물 제거 중 협착 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>원단 위치 조정 중 손이 롤에 말려 협착 사고 발생</li>
+<li>청소 작업 중 롤 회전부에 작업복이 말려 부상 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>운전 중 롤 내부 손 투입 금지</li>
+<li>청소 시 반드시 정지 후 작업</li>
+<li>작업복 소매 및 장갑 말림 주의</li>
+<li>비상정지 위치 사전 숙지</li>
+<li>2인 이상 작업 시 신호체계 준수</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>무리한 구조 금지</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">Roto-Cure 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>Roto-Cure 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">Roto-Cure (연속 가황기)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">실리콘 이형제(MRA - 205), PB-1다목적세정제, 그리스{EUREKA VR(N) NO.2},
+기계유(Shell Tonna S2 M 68), 기어 윤활유(Shell Omala S2 G 220, Super EP 150), 
+윤활유(Kixx RD HD 46, 뿌리는 그리스, TECTYL LUBE 220), 방청제(WD-40)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+ 안전화(RF-40N), 보안경(B-618AF), 방진마스크(8822)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>벨트 및 롤러 상태 확인</li>
+<li>비상정지 장치 정상 작동 여부 확인</li>
+<li>가열부 온도 설정 상태 확인</li>
+<li>작업 주변 이물질 제거</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>상·하부 롤러 협착 위험</li>
+<li>벨트와 롤 접점부 끌림·말림 위험</li>
+<li>고온 롤 및 가열부 접촉 화상 위험</li>
+<li>정비 중 예기치 않은 기동에 의한 협착 위험</li>
+<li>회전체 접촉에 의한 열상 및 골절 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+<li>회전체 방호커버</li>
+<li>추락방지 안전난간</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>비상정지 버튼</li>
+<li>회전체 방호커버</li>
+<li>추락방지 안전난간</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>원단 주름 제거 작업 중 손이 벨트와 롤 사이로 말려 들어가 손가락 골절 및 협착 사고 발생</li>
+<li>가열부 점검 과정에서 고온 롤 표면에 접촉하여 팔 부위 2도 화상 발생</li>
+<li>정비 작업 중 전원 차단 없이 내부 청소를 실시하다 동료가 설비를 재가동하여 협착 사고 발생</li>
+<li>벨트 이탈 조정 작업 중 회전 중인 롤러에 손이 접촉되어 열상 및 협착 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>원단 정렬 및 주름 제거 작업은 전용 공구를 사용하고 손을 직접 투입 금지</li>
+<li>설비 가동 중 원단 회수, 벨트 정렬, 청소 작업 금지</li>
+<li>고온 롤 및 가열부 접근 시 내열장갑 등 보호구를 착용</li>
+<li>정비·청소·점검 작업 전 반드시 전원 차단 및 LOTO(Lock Out Tag Out)를 실시</li>
+<li>회전체 주변에서는 소매가 넓은 작업복, 장갑, 목걸이 등의 착용을 금지</li>
+<li>비상정지 장치 위치를 숙지하고 이상 발생 시 즉시 설비를 정지</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">산업용 로봇 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>산업용 로봇 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">산업용 로봇 (Industrial Robot)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">배합 원료{COTIOX KA-100, KAOLIN, TCR435N-10-3.0, NBR 6240, KNB 35L, ELOFADTM PH100, 
+DAEZO(TRANS ACTIVATED ZINC OXIDE), 폴리-파라페닐렌테레프탈아마이드, ZDA (Zinc Diacrylate Mixture),
+PERCUMYL D, KETTLITZ- TAC/GR 50, 규회석 (WOLLASTONITE), R 0520 BLUE, R 0750 BROWN, R-SILVER, R 0630 GREEN,
+R 2B RED, 실란(KBM-503), Mineral Wool, CERAKWOOL New-Bio), ARBOCEL B 400, 실리카 Nipsil VN3, 중탄 S500,
+무기질바인더 IB-A6, SBR(KUMHO 1502)},
+기계유(Shell Tonna S2 M 68), 기어 윤활유(Shell Omala S2 G 220, Super EP 150), 
+윤활유(Kixx RD HD 46, 뿌리는 그리스, TECTYL LUBE 220), 방청제(WD-40)</td></td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+ 안전화(RF-40N), 보안경(B-618AF), 방독마스크6200(정화통 6006k, 방진필터 5N11, 리테이너 501)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>안전펜스 및 인터락 기능 이상 여부 확인</li>
+<li>로봇 작업반경 내 장애물 및 작업자 유무 확인</li>
+<li>이상 소음·진동 발생 여부 확인</li>
+<li>로봇 프로그램 오류 및 알람 발생 여부 확인</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>로봇 암(Arm)의 고속 이동에 의한 충돌 위험</li>
+<li>로봇과 주변 설비 사이 협착 위험</li>
+<li>예상하지 못한 자동 재기동 위험</li>
+<li>제품 낙하에 의한 충격 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>안전펜스</li>
+<li>비상정지 버튼</li>
+<li>인터락 게이트 스위치</li>
+</ul>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>안전펜스</li>
+<li>비상정지 버튼</li>
+<li>인터락 게이트 스위치</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>티칭 작업 중 로봇을 수동 조작하다 로봇과 지그 사이에 끼어 협착 사고 발생</li>
+<li>오동작 확인을 위해 전원을 차단하지 않고 접근하다 로봇이 재동작하여 협착 사고 발생</li>
+<li>그리퍼에 잡혀 있던 제품이 낙하하여 작업자 머리에 충격 사고 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>안전펜스 내부 출입 시 반드시 설비 정지 후 작업 실시</li>
+<li>인터락 임의 해제 금지</li>
+<li>이상 발생 시 LOTO(잠금·표찰) 후 점검 실시</li>
+<li>로봇 작업반경 내 불필요한 접근 금지</li>
+<li>그리퍼 및 흡착장치 상태 수시 점검</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">압력용기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>압력용기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">압력용기 (Pressure Vessel)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+    <td colspan="2">압축공기, 질소, 산소 등 고압가스</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+안전화(RF-40N), 보안경(B-618AF)
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+            <li>압력계 정상 작동 여부 및 지시값 확인</li>
+            <li>안전밸브 작동 상태 및 봉인 여부 확인</li>
+            <li>배관 및 연결부 누설 여부 점검</li>
+            <li>용기 외관 균열, 부식, 변형 여부 확인</li>
+            <li>밸브 개폐 상태 정상 여부 확인</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+            <li>과압 상태에서 용기 파열 및 폭발 위험</li>
+            <li>고압가스 누출로 인한 질식 및 화재 위험</li>
+            <li>배관 파손 시 고압 분출로 인한 충격</li>
+            <li>밸브 오조작으로 인한 급격한 압력 변화로 인한 폭발 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+            <li>안전밸브 (과압 시 자동 압력 배출)</li>
+            <li>압력계 (내부 압력 확인)</li>
+            <li>차단밸브 (비상 시 차단)</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+            <li>안전밸브 (과압 시 자동 압력 배출)</li>
+            <li>압력계 (내부 압력 확인)</li>
+            <li>차단밸브 (비상 시 차단)</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+            <li>안전밸브 고장 상태에서 압력 상승 → 용기 폭발</li>
+            <li>배관 연결부 누설 → 가스 확산 및 질식 사고</li>
+            <li>노후 용기 사용 중 파열 → 파편 비산 사고</li>
+            <li>밸브 급개방으로 고압 분출 → 작업자 충격</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+            <li>정기검사 및 점검 주기 준수</li>
+            <li>안전밸브 임의 조정 및 해제 금지</li>
+            <li>과압 운전 금지 (정격 압력 준수)</li>
+            <li>누설 발견 시 즉시 사용 중지 및 조치</li>
+            <li>밸브 개폐는 천천히 실시</li>
+            <li>부식 및 손상 발견 시 즉시 교체</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+            <li>즉시 압력 차단 및 밸브 폐쇄</li>
+            <li>주변 작업자 대피 및 접근 금지</li>
+            <li>가스 누출 시 환기 실시</li>
+            <li>누출 부위 접근 금지 및 점화원 제거</li>
+            <li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+<div class="guide" draggable="true">
+    <div class="guide-header">
+        <button class="toggle-btn">인쇄기 작업 안전가이드</button>
+    </div>
+
+    <div class="guide-content">
+        <div class="header">
+            <img src="./logo.jpg" alt="회사 로고" class="logo">
+            <h1>인쇄기 작업 안전가이드</h1>
+        </div>
+
+<table>
+
+<tr>
+<th>설비명칭</th>
+<td colspan="2">인쇄기 (Printing Machine)</td>
+</tr>
+
+<tr>
+<th>사용물질</th>
+<td colspan="2">지연제{Eastman(TM) EP Solvent}, 잉크용제(PG흑색, CN505 Black INK, CN505-Y)
+기계유(Shell Tonna S2 M 68), 기어 윤활유(Shell Omala S2 G 220, Super EP 150), 
+윤활유(Kixx RD HD 46, 뿌리는 그리스, TECTYL LUBE 220), 방청제(WD-40)</td>
+</tr>
+
+<tr>
+<th>MSDS 비치</th>
+<td colspan="2">☑ 비치</td>
+</tr>
+
+<tr>
+<th>착용 보호구</th>
+<td colspan="2">
+ 안전화(RF-40N), 보안경(B-618AF), 방독마스크6200(정화통 6006k, 방진필터 5N11, 리테이너 501), 잉크취급 시 니트릴장갑
+</td>
+</tr>
+
+<tr>
+<th>안전검사 대상</th>
+<td colspan="2">☑ 비대상</td>
+</tr>
+
+<tr>
+<th>[Check]<br>작업전 필수 안전 점검</th>
+<td colspan="2">
+
+<div class="section-title check">
+작업 시작 5분 전, 눈으로 직접 확인하세요!
+</div>
+
+<ul>
+<li>비상정지 버튼 정상 작동 여부 확인</li>
+<li>롤러 회전 상태 및 이상 소음 여부 확인</li>
+<li>원단 공급 상태 확인</li>
+<li>방호커버 설치 상태 확인</li>
+<li>잉크 및 용제 누출 여부 확인</li>
+<li>환기장치 가동 상태 확인</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Warning]<br>설비 가동 시 유해위험요인</th>
+<td colspan="2">
+
+<div class="section-title warning">
+이 부위가 당신을 다치게 할 수 있습니다!
+</div>
+
+<ul>
+<li>회전 롤러 사이 협착 위험</li>
+<li>작업복·장갑 말림 위험</li>
+<li>용제 증기 흡입에 의한 건강장해 위험</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Shield]<br>올바른 방호장치</th>
+<td colspan="2">
+
+<div class="section-title shield">
+임의로 해제하지 마십시오!
+</div>
+
+<ul>
+<li>구동부 방호 덮개</li>
+<li>비상정지 버튼</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Installed]<br>현재 설치된 방호장치</th>
+<td colspan="2">
+
+<div class="section-title installed">
+현재 설비에 적용된 방호장치입니다
+</div>
+
+<ul>
+<li>구동부 방호 덮개</li>
+<li>비상정지 버튼</li>
+</td>
+</tr>
+
+<tr>
+<th>[Accident]<br>사고사례</th>
+<td colspan="2">
+
+<div class="section-title accident">
+숙지하여 경각심을 가지고 주의하십시오!
+</div>
+
+<ul>
+<li>가동 중 롤러 청소 작업 중 손 협착 사고 발생</li>
+<li>헐거운 작업복이 회전 롤러에 말려 부상 발생</li>
+<li>밀폐 상태 작업으로 용제 흡입 후 어지럼증 발생</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Prevent]<br>사고 예방법</th>
+<td colspan="2">
+
+<div class="section-title prevent">
+숙지 및 준수하십시오!
+</div>
+
+<ul>
+<li>가동 중 회전체 및 롤러 접촉 금지</li>
+<li>청소·점검 시 전원 차단 후 작업</li>
+<li>헐거운 작업복 및 장갑 착용 금지</li>
+<li>국소배기장치 가동 상태 유지</li>
+<li>용제 취급 시 방독마스크 착용</li>
+</ul>
+
+</td>
+</tr>
+
+<tr>
+<th>[Emergency]<br>비상조치</th>
+<td colspan="2">
+
+<div class="section-title emergency">
+사고 발생 시 즉시 조치하십시오!
+</div>
+
+<ul>
+<li>즉시 비상정지 버튼 작동</li>
+<li>주변 작업자에게 상황 알림</li>
+<li>관리자 및 안전담당자 호출</li>
+</ul>
+
+</td>
+</tr>
+
+</table>
+
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+
+
+
+<div id="loginModal" class="modal">
+  <div class="modal-box">
+
+    <h2 id="loginTitle">로그인</h2>
+
+    <div class="password-wrapper">
+      <input type="password" id="passwordInput" placeholder="비밀번호 입력">
+      <span id="togglePassword" class="toggle-text">보기</span>
+    </div>
+
+    <div class="modal-buttons">
+      <button id="confirmLogin">로그인</button>
+      <button id="cancelLogin">취소</button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+/* ================= 기본 ================= */
+
+let role = sessionStorage.getItem("role");
+let loginType = null;
+let draggedItem = null;
+
+const guides = document.querySelectorAll(".guide");
+const lists = document.querySelectorAll(".guide-list");
+
+/* ================= 고유 ID ================= */
+
+guides.forEach((g,i)=>{
+ if(!g.dataset.id){
+   g.dataset.id="guide-"+i;
+ }
+});
+
+/* ================= 로그인 ================= */
+
+const USER_HASH="03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4";
+const ADMIN_HASH="888df25ae35772424a560c7152a1de794440e0ea5cfee62828333a456a506e05";
+
+const userBtn=document.getElementById("userLoginBtn");
+const adminBtn=document.getElementById("adminLoginBtn");
+const logoutBtn=document.getElementById("logoutBtn");
+
+const modal=document.getElementById("loginModal");
+const passwordInput=document.getElementById("passwordInput");
+const loginStatus=document.getElementById("loginStatus");
+const confirmBtn=document.getElementById("confirmLogin");
+const cancelBtn=document.getElementById("cancelLogin");
+const title=document.getElementById("loginTitle");
+const togglePassword=document.getElementById("togglePassword");
+
+/* 비밀번호 보기 */
+
+togglePassword.onclick=()=>{
+ passwordInput.type =
+ passwordInput.type==="password"?"text":"password";
+
+ togglePassword.innerText =
+ passwordInput.type==="password"?"보기":"숨기기";
+};
+
+/* 로그인 버튼 */
+
+userBtn.onclick=()=>{
+ loginType="user";
+ title.innerText="일반 로그인";
+ modal.style.display="flex";
+};
+
+adminBtn.onclick=()=>{
+ loginType="admin";
+ title.innerText="관리자 로그인";
+ modal.style.display="flex";
+};
+
+cancelBtn.onclick=()=>modal.style.display="none";
+
+/* SHA256 */
+
+async function sha256(text){
+ const buf=new TextEncoder().encode(text);
+ const hash=await crypto.subtle.digest("SHA-256",buf);
+ return Array.from(new Uint8Array(hash))
+  .map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+/* 로그인 확인 */
+
+confirmBtn.onclick=async()=>{
+
+ const hash=await sha256(passwordInput.value);
+
+ if(loginType==="user" && hash===USER_HASH) role="user";
+ else if(loginType==="admin" && hash===ADMIN_HASH) role="admin";
+ else{
+  alert("비밀번호 오류");
+  return;
+ }
+
+ sessionStorage.setItem("role",role);
+
+ modal.style.display="none";
+ passwordInput.value="";
+
+ applyRole();
+
+};
+
+passwordInput.addEventListener("keydown",e=>{
+ if(e.key==="Enter")confirmBtn.click();
+});
+
+/* 로그아웃 */
+
+logoutBtn.onclick=()=>{
+
+ role=null;
+
+ sessionStorage.removeItem("role");
+ localStorage.removeItem("openGuides");
+
+ document.querySelectorAll(".guide")
+ .forEach(g=>g.classList.remove("open"));
+
+ applyRole();
+
+};
+
+/* ================= 권한 적용 ================= */
+
+function applyRole(){
+
+ document.body.classList.remove("guest","user","admin");
+
+ if(!role){
+
+  document.body.classList.add("guest");
+
+  loginStatus.innerText="🔒 미로그인";
+  loginStatus.style.color="gray";
+
+  guides.forEach(g=>{
+   g.classList.add("locked");
+   g.draggable=false;
+  });
+
+  logoutBtn.style.display="none";
+  userBtn.style.display="inline-block";
+  adminBtn.style.display="inline-block";
+
+ }
+
+ else if(role==="user"){
+
+  document.body.classList.add("user");
+
+  loginStatus.innerText="👤 일반 사용자";
+  loginStatus.style.color="#2f80ed";
+
+  guides.forEach(g=>{
+   g.classList.remove("locked");
+   g.draggable=false;
+  });
+
+  logoutBtn.style.display="inline-block";
+  userBtn.style.display="none";
+  adminBtn.style.display="none";
+
+ }
+
+ else if(role==="admin"){
+
+  document.body.classList.add("admin");
+
+  loginStatus.innerText="🛠 관리자 모드";
+  loginStatus.style.color="#e53935";
+
+  guides.forEach(g=>{
+   g.classList.remove("locked");
+   g.draggable=true;
+  });
+
+  logoutBtn.style.display="inline-block";
+  userBtn.style.display="none";
+  adminBtn.style.display="none";
+
+ }
+
+}
+
+/* ================= 펼치기 ================= */
+
+function saveOpen(){
+
+ const open=[];
+
+ document.querySelectorAll(".guide.open")
+ .forEach(g=>open.push(g.dataset.id));
+
+ localStorage.setItem("openGuides",JSON.stringify(open));
+
+}
+
+document.querySelectorAll(".guide-header").forEach(h=>{
+
+ h.onclick=function(){
+
+  if(!role) return;
+
+  const guide=this.closest(".guide");
+
+  guide.classList.toggle("open");
+
+  saveOpen();
+
+ };
+
+});
+
+/* 전체 펼치기 */
+
+const toggleAll=document.getElementById("toggleAll");
+
+if(toggleAll){
+
+ toggleAll.onchange=function(){
+
+  guides.forEach(g=>{
+   if(role) g.classList.toggle("open",this.checked);
+  });
+
+  saveOpen();
+
+ };
+
+}
+
+/* 열린 상태 복원 */
+
+const savedOpen=JSON.parse(localStorage.getItem("openGuides"));
+
+if(savedOpen){
+
+ savedOpen.forEach(id=>{
+  document.querySelector(`[data-id="${id}"]`)
+  ?.classList.add("open");
+ });
+
+}
+
+/* ================= 드래그 ================= */
+
+guides.forEach(item=>{
+
+ item.addEventListener("dragstart",e=>{
+
+  if(role!=="admin") return;
+
+  draggedItem=item;
+  item.classList.add("dragging");
+
+  e.dataTransfer.effectAllowed="move";
+
+ });
+
+ item.addEventListener("dragend",()=>{
+
+  item.classList.remove("dragging");
+  draggedItem=null;
+
+  removeIndicator();
+  savePositions();
+
+ });
+
+});
+
+lists.forEach(list=>{
+
+ list.addEventListener("dragover",e=>{
+
+  if(role!=="admin") return;
+
+  e.preventDefault();
+
+  const afterElement=getAfter(list,e.clientY);
+
+  removeIndicator();
+
+  const indicator=document.createElement("div");
+  indicator.className="drop-indicator";
+
+  if(!afterElement){
+
+   list.appendChild(indicator);
+   list.appendChild(draggedItem);
+
+  }else{
+
+   list.insertBefore(indicator,afterElement);
+   list.insertBefore(draggedItem,afterElement);
+
+  }
+
+ });
+
+});
+
+function getAfter(container,y){
+
+ const els=[...container.querySelectorAll(".guide:not(.dragging)")];
+
+ return els.reduce((closest,child)=>{
+
+  const box=child.getBoundingClientRect();
+  const offset=y-box.top-box.height/2;
+
+  if(offset<0 && offset>closest.offset){
+   return{offset:offset,element:child};
+  }
+
+  return closest;
+
+ },{offset:-Infinity}).element;
+
+}
+
+function removeIndicator(){
+ document.querySelectorAll(".drop-indicator")
+ .forEach(el=>el.remove());
+}
+
+/* ================= 위치 저장 ================= */
+
+function savePositions(){
+
+ const data=[];
+
+ document.querySelectorAll(".guide-list").forEach(list=>{
+
+  const sectionId=list.closest(".section").id;
+
+  [...list.children].forEach((g,index)=>{
+
+   if(g.classList.contains("guide")){
+
+    data.push({
+     id:g.dataset.id,
+     section:sectionId,
+     order:index
+    });
+
+   }
+
+  });
+
+ });
+
+ localStorage.setItem("guidePositions",JSON.stringify(data));
+applyNumbering();
+
+}
+
+/* 위치 복원 */
+
+function loadPositions(){
+
+ const saved=JSON.parse(localStorage.getItem("guidePositions"));
+ if(!saved) return;
+
+ saved
+ .sort((a,b)=>a.order-b.order)
+ .forEach(item=>{
+
+  const el=document.querySelector(`[data-id="${item.id}"]`);
+  const section=document.getElementById(item.section);
+
+  if(el && section){
+   section.querySelector(".guide-list").appendChild(el);
+  }
+
+ });
+
+}
+
+/* ================= 검색 ================= */
+
+const searchInput=document.getElementById("searchInput");
+
+if(searchInput){
+
+ searchInput.addEventListener("keyup",function(){
+
+  let keyword=this.value.toLowerCase();
+
+  guides.forEach(guide=>{
+
+   let title=guide.querySelector(".guide-header").innerText.toLowerCase();
+
+   guide.style.display =
+   title.includes(keyword) ? "block" : "none";
+
+  });
+
+ });
+
+}
+
+/* ================= 번호 붙이기 ================= */
+
+function applyNumbering(){
+
+ const guides = document.querySelectorAll(".guide");
+
+ guides.forEach((guide,index)=>{
+
+   const header = guide.querySelector(".guide-header");
+   if(!header) return;
+
+   let text = header.textContent;
+
+   /* 기존 번호 완전 제거 */
+   text = text.replace(/^\s*\d+\.\s*/,"");
+
+   /* 새 번호 부여 */
+   header.textContent = (index+1) + ". " + text;
+
+ });
+
+}
+
+/* 초기 실행 */
+applyNumbering();
+
+/* ================= 시작 ================= */
+
+if(!role){
+
+ localStorage.removeItem("openGuides");
+
+ document.querySelectorAll(".guide")
+ .forEach(g=>g.classList.remove("open"));
+
+}
+
+loadPositions();
+applyNumbering();
+applyRole();
+
+
+
+/* ================= 설비 하나 인쇄 ================= */
+
+document.querySelectorAll(".guide").forEach(guide=>{
+
+const btn=document.createElement("button");
+btn.innerText="🖨 인쇄";
+btn.className="print-btn";
+
+guide.appendChild(btn);
+
+});
+
+
+});
+
+
+/* ================= 인쇄 차단 ================= */
+
+window.addEventListener("beforeprint",function(){
+
+ if(!sessionStorage.getItem("role")){
+  alert("로그인 후 인쇄 가능합니다.");
+ }
+
+});
+
+/* Ctrl + P 차단 */
+
+document.addEventListener("keydown",function(e){
+
+ if(!sessionStorage.getItem("role")
+ && (e.ctrlKey || e.metaKey)
+ && e.key.toLowerCase()==="p"){
+
+  e.preventDefault();
+  alert("로그인 후 인쇄 가능합니다.");
+
+ }
+
+});
+
+
+function printScreen(){
+
+const content = document.body;
+
+/* A4 높이(px) 계산 (대략 1122px) */
+const A4_HEIGHT = 1122;
+
+/* 현재 문서 높이 */
+const contentHeight = document.documentElement.scrollHeight;
+
+/* 비율 계산 */
+let scale = A4_HEIGHT / contentHeight;
+
+/* 너무 작아지는 것 방지 */
+if(scale > 1) scale = 1;
+
+/* 적용 */
+content.style.transform = `scale(${scale})`;
+content.style.transformOrigin = "top left";
+content.style.width = (100/scale) + "%";
+
+document.body.classList.add("screen-print");
+
+window.print();
+
+/* 복구 */
+setTimeout(()=>{
+content.style.transform = "";
+content.style.width = "";
+document.body.classList.remove("screen-print");
+},500);
+
+}
+
+
+
+
+/* ================= 목차 인쇄 ================= */
+
+function printTOC(){
+
+/* 목차 HTML 생성 */
+let tocHTML = `
+<h1 style="text-align:center;">가스켓 제조 안전가이드</h1>
+<h2 style="margin-bottom:20px;">📑 설비 목차</h2>
+<ol style="font-size:16px; line-height:1.8;">
+`;
+
+/* 현재 보이는 설비만 가져오기 */
+document.querySelectorAll(".guide").forEach(guide=>{
+
+if(guide.style.display === "none") return;
+
+let title = guide.querySelector(".guide-header").innerText;
+
+/* 앞에 번호 중복 제거 */
+title = title.replace(/^\d+\.\s*/,'');
+
+tocHTML += `<li>${title}</li>`;
+
+});
+
+tocHTML += `</ol>`;
+
+/* 새 창에서 인쇄 */
+const win = window.open("", "", "width=800,height=900");
+
+win.document.write(`
+<html>
+<head>
+<title>목차 인쇄</title>
+<style>
+body{
+font-family:'Noto Sans KR', Arial;
+padding:30px;
+}
+h1{font-size:22px;}
+h2{font-size:18px;}
+ol{padding-left:20px;}
+li{margin-bottom:8px;}
+</style>
+</head>
+<body>
+${tocHTML}
+</body>
+</html>
+`);
+
+win.document.close();
+win.focus();
+win.print();
+win.close();
+
+}
+
+
+
+document.addEventListener("click",function(e){
+
+    if(!e.target.classList.contains("print-btn")) return;
+
+    e.stopPropagation();
+
+    const guide=e.target.closest(".guide");
+
+    printGuideA4(guide);
+
+});
+
+
+function printGuideA4(guide){
+
+const win=window.open("","","width=1000,height=900");
+
+let html="";
+
+html+=`
+<html>
+
+<head>
+
+<title>인쇄</title>
+
+<style>
+
+body{
+
+font-family:'Noto Sans KR';
+padding:20px;
+background:white;
+
+}
+
+h1{
+
+text-align:center;
+margin-bottom:30px;
+
+}
+
+.card{
+
+border:2px solid #ccc;
+border-radius:10px;
+
+padding:15px;
+
+margin-bottom:18px;
+
+page-break-inside:avoid;
+break-inside:avoid;
+
+}
+
+.card-title{
+
+font-size:18px;
+
+font-weight:bold;
+
+color:#2f80ed;
+
+margin-bottom:10px;
+
+border-bottom:2px solid #2f80ed;
+
+padding-bottom:5px;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-bottom:20px;
+
+}
+
+td,th{
+
+border:1px solid #999;
+
+padding:8px;
+
+}
+
+ul{
+
+margin:0;
+
+padding-left:20px;
+
+}
+
+li{
+
+margin-bottom:6px;
+
+}
+
+@page{
+
+size:A4 portrait;
+
+margin:12mm;
+
+}
+
+.print-header{
+
+display:flex;
+
+align-items:center;
+
+margin-bottom:25px;
+
+border-bottom:3px solid #2f80ed;
+
+padding-bottom:15px;
+
+}
+
+.print-logo{
+
+width:70px;
+
+height:70px;
+
+margin-right:18px;
+
+}
+
+.company{
+
+flex:1;
+
+}
+
+.company h2{
+
+margin:0;
+
+font-size:18px;
+
+color:#666;
+
+}
+
+.company h1{
+
+margin:5px 0 0;
+
+font-size:28px;
+
+color:#2f80ed;
+
+}
+
+
+
+
+
+
+
+
+
+
+</style>
+
+</head>
+
+<body>
+
+`;
+
+
+
+const title = guide.querySelector("h1").innerText;
+
+html += `
+<div class="print-header">
+
+    <img src="./logo.jpg" class="print-logo">
+
+    <div class="company">
+
+        <h2>제일이엔에스</h2>
+
+        <h1>${title}</h1>
+
+    </div>
+
+</div>
+`;
+
+
+
+const rows=guide.querySelectorAll("table tr");
+
+
+
+rows.forEach(row=>{
+
+const th=row.querySelector("th");
+
+const td=row.querySelector("td");
+
+
+
+if(!th || !td)return;
+
+
+
+const title=th.innerText;
+
+
+
+const card=document.createElement("div");
+
+card.className="card";
+
+
+
+let content=td.innerHTML;
+
+
+
+html+=`
+
+<div class="card">
+
+<div class="card-title">
+
+${title}
+
+</div>
+
+${content}
+
+</div>
+
+`;
+
+
+
+});
+
+
+
+html+="</body></html>";
+
+
+
+win.document.write(html);
+
+win.document.close();
+
+
+
+setTimeout(()=>{
+
+win.focus();
+
+win.print();
+
+win.close();
+
+},500);
+
+}
+
+
+
+function printAllGuide(){
+
+const logoSrc = document.querySelector(".logo").src;
+
+const win=window.open("","","width=1200,height=900");
+
+let html=`
+
+<html>
+
+<head>
+
+<title>안전가이드</title>
+
+<style>
+
+body{
+
+font-family:'Noto Sans KR';
+
+margin:12mm;
+
+background:white;
+
+}
+
+h1{
+
+text-align:center;
+
+margin-bottom:40px;
+
+}
+
+.guide{
+
+page-break-before:always;
+
+}
+
+.guide:first-child{
+
+page-break-before:auto;
+
+}
+
+.card{
+
+border:1px solid #999;
+
+border-radius:10px;
+
+padding:15px;
+
+margin-bottom:15px;
+
+page-break-inside:avoid;
+
+break-inside:avoid;
+
+}
+
+.card-title{
+
+font-size:17px;
+
+font-weight:bold;
+
+margin-bottom:8px;
+
+padding-bottom:5px;
+
+border-bottom:2px solid #2f80ed;
+
+color:#2f80ed;
+
+}
+
+ul{
+
+margin:0;
+
+padding-left:20px;
+
+}
+
+li{
+
+margin-bottom:6px;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin-bottom:15px;
+
+}
+
+td,th{
+
+border:1px solid #999;
+
+padding:8px;
+
+}
+
+@page{
+
+size:A4 portrait;
+
+margin:10mm;
+
+}
+
+
+.print-header{
+
+display:flex;
+align-items:center;
+border-bottom:3px solid #2f80ed;
+padding-bottom:15px;
+margin-bottom:25px;
+
+}
+
+.print-logo{
+
+width:70px;
+height:70px;
+margin-right:15px;
+
+}
+
+.company{
+
+flex:1;
+
+}
+
+.company h2{
+
+margin:0;
+font-size:18px;
+color:#666;
+
+}
+
+.company h1{
+
+margin:5px 0 0;
+font-size:28px;
+color:#2f80ed;
+text-align:left;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>
+
+가스켓 제조 안전가이드
+
+</h1>
+
+`;
+
+
+
+
+document.querySelectorAll(".guide").forEach(guide=>{
+
+const title = guide.querySelector("h1").innerText;
+
+html += `<div class="guide">`;
+
+html += `
+
+<div class="print-header">
+
+    <img src="${logoSrc}" class="print-logo">
+
+    <div class="company">
+
+        <h2>제일이엔에스</h2>
+
+        <h1>${title}</h1>
+
+    </div>
+
+</div>
+
+`;
+
+
+
+guide.querySelectorAll("table tr").forEach(row=>{
+
+const th=row.querySelector("th");
+
+const td=row.querySelector("td");
+
+if(!th||!td)return;
+
+html+=`
+
+<div class="card">
+
+<div class="card-title">
+
+${th.innerText}
+
+</div>
+
+${td.innerHTML}
+
+</div>
+
+`;
+
+});
+
+html+=`</div>`;
+
+});
+
+
+
+html+=`
+
+</body>
+
+</html>
+
+`;
+
+win.document.write(html);
+
+win.document.close();
+
+setTimeout(()=>{
+
+win.focus();
+
+win.print();
+
+win.close();
+
+},700);
+
+}
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+</body>
+
+
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
