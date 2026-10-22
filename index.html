@@ -5228,7 +5228,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /* ================= 기본 ================= */
 
+const LOGIN_STARTED_KEY = "loginStartedAt";
+
+const SESSION_LIMITS = {
+    user: 10 * 60 * 1000,
+    admin: 30 * 60 * 1000
+};
+
 let role = sessionStorage.getItem("role");
+
+const loginStartedAt = Number(
+    sessionStorage.getItem(LOGIN_STARTED_KEY)
+);
+
+// 기존 로그인 시간이 없거나 제한 시간이 지났으면 로그아웃
+if (
+    role &&
+    (
+        !loginStartedAt ||
+        !SESSION_LIMITS[role] ||
+        Date.now() - loginStartedAt >= SESSION_LIMITS[role]
+    )
+) {
+    sessionStorage.removeItem("role");
+    sessionStorage.removeItem(LOGIN_STARTED_KEY);
+    role = null;
+}
+
+let autoLogoutTimer = null;
+
+function scheduleAutoLogout() {
+    clearTimeout(autoLogoutTimer);
+
+    if (!role) return;
+
+    const startedAt = Number(
+        sessionStorage.getItem(LOGIN_STARTED_KEY)
+    );
+
+    const limit = SESSION_LIMITS[role];
+
+    if (!startedAt || !limit) return;
+
+    const remaining = limit - (Date.now() - startedAt);
+
+    if (remaining <= 0) {
+        logoutBtn.click();
+        return;
+    }
+
+    autoLogoutTimer = setTimeout(() => {
+        logoutBtn.click();
+    }, remaining);
+}
 let loginType = null;
 let draggedItem = null;
 
@@ -5308,12 +5360,18 @@ confirmBtn.onclick=async()=>{
   return;
  }
 
- sessionStorage.setItem("role",role);
+sessionStorage.setItem("role", role);
+
+sessionStorage.setItem(
+    LOGIN_STARTED_KEY,
+    Date.now().toString()
+);
 
  modal.style.display="none";
  passwordInput.value="";
 
- applyRole();
+applyRole();
+scheduleAutoLogout();
 
 };
 
@@ -5329,6 +5387,9 @@ logoutBtn.onclick=()=>{
 
  sessionStorage.removeItem("role");
  localStorage.removeItem("openGuides");
+
+clearTimeout(autoLogoutTimer);
+sessionStorage.removeItem(LOGIN_STARTED_KEY);
 
  document.querySelectorAll(".guide")
  .forEach(g=>g.classList.remove("open"));
@@ -5657,6 +5718,7 @@ if(!role){
 loadPositions();
 applyNumbering();
 applyRole();
+scheduleAutoLogout();
 
 
 
